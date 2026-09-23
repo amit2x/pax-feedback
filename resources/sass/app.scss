@@ -1,0 +1,151 @@
+// Bootstrap 5.3.8
+@import "bootstrap/scss/bootstrap";
+
+// Design tokens
+:root {
+    --paf-primary: #0d47a1;
+    --paf-accent: #1976d2;
+    --paf-bg: #f5f7fb;
+    --paf-text: #1f2937;
+    --paf-muted: #6b7280;
+    --paf-success: #16a34a;
+    --paf-danger: #dc2626;
+}
+
+body {
+    background-color: var(--paf-bg);
+    color: var(--paf-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.paf-container {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.paf-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.paf-rating {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.paf-rating-button {
+    flex: 1;
+    background: #fff;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 0.75rem 0.25rem;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+
+    &:hover {
+        border-color: var(--paf-accent);
+    }
+
+    &.is-selected {
+        border-color: var(--paf-primary);
+        background: #eff6ff;
+        transform: scale(1.04);
+    }
+
+    &:focus {
+        outline: 3px solid #bfdbfe;
+    }
+}
+
+.paf-type-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    width: 100%;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+
+    &:hover {
+        border-color: var(--paf-accent);
+    }
+
+    &.is-selected {
+        border-color: var(--paf-primary);
+        background: #eff6ff;
+    }
+
+    .paf-type-icon {
+        font-size: 1.5rem;
+    }
+}
+
+.paf-choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.paf-progress {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+
+    .paf-progress-bar {
+        height: 100%;
+        background: var(--paf-primary);
+        transition: width 0.25s ease;
+    }
+}
+
+.paf-footer-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+
+    .btn {
+        flex: 1;
+        padding: 0.75rem;
+        font-weight: 600;
+    }
+}
+
+.paf-lang-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+
+    .btn {
+        border-radius: 999px;
+        padding: 0.35rem 0.9rem;
+    }
+}
+
+.paf-reference-box {
+    background: #eff6ff;
+    border: 2px dashed var(--paf-primary);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.35rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: var(--paf-primary);
+    user-select: all;
+}

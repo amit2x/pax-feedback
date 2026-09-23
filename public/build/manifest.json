@@ -1,0 +1,33 @@
+{
+  "_vendor-DlNyBEaB.js": {
+    "file": "assets/vendor-DlNyBEaB.js",
+    "name": "vendor"
+  },
+  "resources/js/admin.js": {
+    "file": "assets/admin-Dg8Lqyd4.js",
+    "name": "admin",
+    "src": "resources/js/admin.js",
+    "isEntry": true,
+    "imports": [
+      "_vendor-DlNyBEaB.js"
+    ]
+  },
+  "resources/js/public.js": {
+    "file": "assets/public-BslRY2SW.js",
+    "name": "public",
+    "src": "resources/js/public.js",
+    "isEntry": true,
+    "imports": [
+      "_vendor-DlNyBEaB.js"
+    ]
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-CsP89T2H.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  }
+}

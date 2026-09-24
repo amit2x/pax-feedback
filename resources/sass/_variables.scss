@@ -1,0 +1,59 @@
+// ---------- Brand colors ----------
+$paf-primary: #0b3d91;        // AAI-inspired deep blue
+$paf-primary-dark: #072a66;
+$paf-primary-light: #1e5bc6;
+$paf-accent: #1976d2;
+$paf-accent-light: #e6f0fc;
+$paf-gold: #d4a017;           // Subtle accent for "premium" feel
+$paf-gold-soft: #fdf3d3;
+
+// ---------- Neutrals ----------
+$paf-bg: #eef2f8;
+$paf-bg-elevated: #ffffff;
+$paf-card-bg: #ffffff;
+$paf-text: #0f172a;
+$paf-text-soft: #334155;
+$paf-muted: #64748b;
+$paf-border: #e2e8f0;
+$paf-border-strong: #cbd5e1;
+
+// ---------- Feedback states ----------
+$paf-success: #16a34a;
+$paf-warning: #f59e0b;
+$paf-danger: #dc2626;
+$paf-info: #0ea5e9;
+
+// ---------- Radii ----------
+$paf-radius-xs: 8px;
+$paf-radius-sm: 12px;
+$paf-radius: 16px;
+$paf-radius-lg: 22px;
+$paf-radius-pill: 999px;
+
+// ---------- Shadows ----------
+$paf-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+$paf-shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.06);
+$paf-shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+$paf-shadow-lg: 0 20px 45px rgba(11, 61, 145, 0.16);
+
+// ---------- Typography ----------
+$paf-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Noto Sans Devanagari',
+    'Noto Sans Bengali', sans-serif;
+$paf-font-mono: 'SF Mono', Menlo, Consolas, monospace;
+
+// ---------- Motion ----------
+$paf-ease: cubic-bezier(0.4, 0, 0.2, 1);
+$paf-duration-fast: 150ms;
+$paf-duration: 240ms;
+$paf-duration-slow: 420ms;
+
+// ---------- Dark mode tokens ----------
+$paf-dark-bg: #0b1220;
+$paf-dark-bg-elevated: #111a2e;
+$paf-dark-card-bg: #16213b;
+$paf-dark-text: #e8eefc;
+$paf-dark-text-soft: #c3cee6;
+$paf-dark-muted: #8b97b5;
+$paf-dark-border: #1f2b48;
+$paf-dark-border-strong: #2c3a5c;

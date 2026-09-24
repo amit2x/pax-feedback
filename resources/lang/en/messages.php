@@ -38,4 +38,38 @@ return [
     'thank_you' => 'Thank You!',
     'your_reference' => 'Your Reference Number',
     'experience_at' => 'How was your experience at:',
+    'record_voice_hint' => 'You can optionally record up to 60 seconds of voice feedback.',
+    'start_recording' => 'Start Recording',
+    'stop_recording' => 'Stop',
+    're_record' => 'Re-record',
+    'max_duration' => 'Maximum :seconds seconds',
+    'max_photos' => 'Up to :count photos',
+    'add_photo_hint' => 'You can attach up to 2 photos to help us understand.',
+    'contact_consent' => 'Your information will only be used to follow up on this feedback and will not be shared.',
+
+    'share_title' => 'Anything else you would like to share?',
+    'share_hint' => 'All fields below are optional. Add as much or as little as you like.',
+    'write_comment' => 'Write a comment',
+    'optional' => 'Optional',
+    'comment_placeholder' => 'Tell us about your experience…',
+
+    'meta_description' => 'Help us improve your airport experience. Share feedback in under a minute. Anonymous and secure.',
+    'brand_subtitle' => 'Airports Authority of India',
+    'skip_to_content' => 'Skip to main content',
+
+    'hero_aria' => 'Passenger welcome illustration',
+    'hero_alt' => 'Airport staff welcoming passengers with a traditional namaste',
+    'hero_badge' => 'Passenger Feedback',
+    'hero_eyebrow' => 'Welcome to Kolkata Airport',
+    'hero_title' => 'Your voice shapes our airport',
+    'hero_subtitle' => 'Share your experience in under a minute — completely anonymous.',
+
+    'select_language' => 'Choose your language',
+
+    'footer_secure' => 'Secure connection',
+    'footer_anonymous' => 'Anonymous feedback',
+    'privacy_short' => 'Your privacy is protected',
+
+    'voice_added' => 'Voice recorded',
+    'photos_added' => ':count photo added',
 ];

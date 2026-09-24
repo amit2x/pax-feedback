@@ -1,0 +1,274 @@
+@use 'variables' as v;
+
+// ============================================================
+// Brand header — logo left, animated aircraft sky on the right
+// ============================================================
+.paf-brand-bar {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 15% 120%, rgba(255, 255, 255, 0.18), transparent 60%),
+        linear-gradient(135deg, v.$paf-primary 0%, v.$paf-primary-dark 60%, #051c47 100%);
+    color: #fff;
+    padding: 0.85rem 1rem 0.95rem;
+    isolation: isolate;
+
+    // Gold accent strip on top
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 3px;
+        background: linear-gradient(90deg, v.$paf-gold, #f6c453 40%, v.$paf-gold);
+        opacity: 0.9;
+        z-index: 3;
+    }
+
+    // Soft sky glow behind aircraft
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 85% 40%, rgba(255, 255, 255, 0.14), transparent 55%);
+        pointer-events: none;
+        z-index: 1;
+    }
+}
+
+.paf-brand-bar__inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+// ---------- AAI logo — white chip so logo colors stand out ----------
+.paf-brand-logo {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #ffffff;
+    display: grid;
+    place-items: center;
+    padding: 1px;
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.28),
+        inset 0 0 0 1px rgba(11, 61, 145, 0.08);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+}
+
+// ---------- Titles ----------
+.paf-brand-titles {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.paf-brand-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.005em;
+    line-height: 1.15;
+    margin: 0;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.paf-brand-subtitle {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+// ---------- Aircraft takeoff animation ----------
+// ---------- Aircraft takeoff animation ----------
+.paf-sky {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+
+    .paf-cloud {
+        position: absolute;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 70%);
+        border-radius: 50%;
+        opacity: 0.75;
+    }
+
+    .paf-cloud--1 {
+        width: 100px;
+        height: 32px;
+        top: 22%;
+        right: -120px;
+        animation: paf-drift 20s linear infinite;
+    }
+
+    .paf-cloud--2 {
+        width: 70px;
+        height: 24px;
+        top: 58%;
+        right: -90px;
+        animation: paf-drift 26s linear 4s infinite;
+        opacity: 0.5;
+    }
+
+    .paf-cloud--3 {
+        width: 130px;
+        height: 38px;
+        top: 78%;
+        right: -150px;
+        animation: paf-drift 32s linear 8s infinite;
+        opacity: 0.35;
+    }
+
+    // ---- Aircraft ----
+    .paf-aircraft {
+        position: absolute;
+        bottom: 4px;
+        right: -50px;                 // start just off-screen on the right
+        width: 36px;
+        height: 36px;
+        color: #ffffff;
+        opacity: 0;
+        filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+        transform-origin: center;
+        animation: paf-takeoff 12s v.$paf-ease 1s infinite;
+        will-change: transform, opacity;
+
+        svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            transform: rotate(-45deg);   // orient nose up-and-right
+        }
+    }
+
+    // ---- Contrail ----
+    .paf-trail {
+        position: absolute;
+        bottom: 20px;
+        right: -50px;
+        width: 60px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 100%);
+        opacity: 0;
+        animation: paf-trail 12s v.$paf-ease 1s infinite;
+        will-change: transform, opacity;
+    }
+}
+
+@keyframes paf-takeoff {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) scale(0.9);
+    }
+    6% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+        transform: translate3d(-46vw, -22px, 0) scale(1.05);
+    }
+    85% {
+        opacity: 1;
+        transform: translate3d(-88vw, -50px, 0) scale(1);
+    }
+    95% {
+        opacity: 0;
+        transform: translate3d(-95vw, -58px, 0) scale(0.9);
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(-100vw, -60px, 0) scale(0.85);
+    }
+}
+
+@keyframes paf-trail {
+    0%, 8% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0);
+    }
+    20% {
+        opacity: 0.9;
+    }
+    60% {
+        opacity: 0.5;
+        transform: translate3d(-48vw, -24px, 0);
+    }
+    88% {
+        opacity: 0.15;
+        transform: translate3d(-88vw, -50px, 0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(-95vw, -58px, 0);
+    }
+}
+
+@keyframes paf-drift {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(-180vw, 0, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .paf-sky .paf-aircraft,
+    .paf-sky .paf-trail,
+    .paf-sky .paf-cloud {
+        animation: none !important;
+    }
+
+    .paf-sky .paf-aircraft {
+        opacity: 0.5;
+        transform: none;
+        right: 14px;
+        bottom: 12px;
+
+        svg {
+            transform: rotate(-45deg);
+        }
+    }
+}
+
+
+// Small screens: shrink subtitle or hide if too tight
+@media (max-width: 380px) {
+    .paf-brand-logo {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+    }
+
+    .paf-brand-title {
+        font-size: 0.94rem;
+    }
+
+    .paf-brand-subtitle {
+        font-size: 0.62rem;
+        letter-spacing: 0.03em;
+    }
+}

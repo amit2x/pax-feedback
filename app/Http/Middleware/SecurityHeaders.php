@@ -15,20 +15,36 @@ class SecurityHeaders
 
         $response = $next($request);
 
+        // $csp = implode('; ', [
+        //     "default-src 'self'",
+        //     "script-src 'self' 'nonce-{$nonce}'",
+        //     "style-src 'self' 'unsafe-inline'",
+        //     "img-src 'self' data: blob:",
+        //     "font-src 'self' data:",
+        //     "connect-src 'self'",
+        //     "media-src 'self' blob:",
+        //     "object-src 'none'",
+        //     "base-uri 'self'",
+        //     "form-action 'self'",
+        //     "frame-ancestors 'none'",
+        //     'upgrade-insecure-requests',
+        // ]);
+
+
         $csp = implode('; ', [
-            "default-src 'self'",
-            "script-src 'self' 'nonce-{$nonce}'",
-            "style-src 'self' 'unsafe-inline'",
-            "img-src 'self' data: blob:",
-            "font-src 'self' data:",
-            "connect-src 'self'",
-            "media-src 'self' blob:",
-            "object-src 'none'",
-            "base-uri 'self'",
-            "form-action 'self'",
-            "frame-ancestors 'none'",
-            'upgrade-insecure-requests',
-        ]);
+    "default-src 'self'",
+    "script-src 'self' 'nonce-{$nonce}'",
+    "style-src 'self' 'unsafe-inline' https://fonts.bunny.net",
+    "font-src 'self' data: https://fonts.bunny.net",
+    "img-src 'self' data: blob:",
+    "connect-src 'self'",
+    "media-src 'self' blob:",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    'upgrade-insecure-requests',
+]);
 
         $response->headers->set('Content-Security-Policy', $csp);
         $response->headers->set('X-Content-Type-Options', 'nosniff');

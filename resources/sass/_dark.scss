@@ -1,0 +1,89 @@
+@use 'variables' as v;
+
+@media (prefers-color-scheme: dark) {
+    body.paf-body {
+        background:
+            radial-gradient(1200px 600px at 100% -10%, rgba(25, 118, 210, 0.12), transparent 60%),
+            radial-gradient(900px 500px at -10% 110%, rgba(11, 61, 145, 0.18), transparent 55%),
+            v.$paf-dark-bg;
+        color: v.$paf-dark-text;
+    }
+
+    .paf-card {
+        background: v.$paf-dark-card-bg;
+        border-color: v.$paf-dark-border;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+
+        &:hover {
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    .paf-step-title,
+    .paf-share-label,
+    .paf-type-label {
+        color: v.$paf-dark-text;
+    }
+
+    .paf-step-hint,
+    .paf-rating-labels,
+    .paf-counter,
+    .paf-consent {
+        color: v.$paf-dark-muted;
+    }
+
+    .paf-rating-button,
+    .paf-type-card,
+    .paf-media-tile {
+        background: v.$paf-dark-bg-elevated;
+        border-color: v.$paf-dark-border-strong;
+        color: v.$paf-dark-text;
+    }
+
+    .paf-rating-button.is-selected,
+    .paf-type-card.is-selected {
+        background: rgba(25, 118, 210, 0.18);
+        border-color: v.$paf-accent;
+    }
+
+    .paf-progress {
+        background: v.$paf-dark-border;
+    }
+
+    .form-control,
+    .form-select {
+        background: v.$paf-dark-bg-elevated;
+        border-color: v.$paf-dark-border-strong;
+        color: v.$paf-dark-text;
+
+        &::placeholder {
+            color: v.$paf-dark-muted;
+        }
+
+        &:focus {
+            background: v.$paf-dark-bg-elevated;
+            color: v.$paf-dark-text;
+            border-color: v.$paf-accent;
+        }
+    }
+
+    .paf-trust-line {
+        background: rgba(22, 33, 59, 0.6);
+        border-color: v.$paf-dark-border;
+        color: v.$paf-dark-muted;
+    }
+
+    .paf-footer {
+        color: v.$paf-dark-muted;
+
+        a {
+            color: #7fb0f0;
+        }
+    }
+
+    .paf-reference-box {
+        background: rgba(25, 118, 210, 0.14);
+        color: #8ab6f2;
+        border-color: rgba(138, 182, 242, 0.4);
+    }
+}

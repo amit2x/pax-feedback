@@ -1,0 +1,53 @@
+@use 'variables' as v;
+
+body.paf-body {
+    background: v.$paf-bg;
+    color: v.$paf-text;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+.paf-container {
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 1rem;
+    padding-bottom: 2rem;
+}
+
+.paf-brand {
+    text-align: center;
+    padding-top: 1.25rem;
+    padding-bottom: 0.5rem;
+
+    .paf-brand-logo {
+        font-size: 2rem;
+        display: inline-block;
+        line-height: 1;
+    }
+
+    .paf-brand-name {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-top: 0.35rem;
+        color: v.$paf-primary;
+        letter-spacing: 0.02em;
+    }
+}
+
+.paf-footer {
+    text-align: center;
+    color: v.$paf-muted;
+    font-size: 0.75rem;
+    padding: 1.5rem 1rem 2rem;
+}
+
+.paf-trust-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: v.$paf-muted;
+    margin-top: 0.5rem;
+}

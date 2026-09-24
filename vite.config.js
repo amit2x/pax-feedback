@@ -12,6 +12,13 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    css: {
+        preprocessorOptions: {
+            scss: {
+                silenceDeprecations: ['import', 'legacy-js-api', 'global-builtin'],
+            },
+        },
+    },
     build: {
         sourcemap: false,
         cssCodeSplit: true,

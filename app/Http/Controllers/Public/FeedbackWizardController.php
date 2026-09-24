@@ -27,9 +27,7 @@ class FeedbackWizardController extends Controller
         $qr = $this->qrTokens->resolve($token);
         abort_unless($qr && $qr->isUsable(), 404);
 
-        // Bind token to session for the wizard. Never trust the client to pass it back.
         session(['feedback.qr_token' => $token]);
-        session(['feedback.submission_uuid' => (string) Str::uuid()]);
 
         return view('feedback.welcome', [
             'qr' => $qr,
@@ -43,9 +41,34 @@ class FeedbackWizardController extends Controller
             'language_code' => ['required', 'in:en,hi,bn'],
         ]);
 
-        session([
-            'feedback.language_code' => $validated['language_code'],
+        session(['feedback.language_code' => $validated['language_code']]);
+
+        app()->setLocale($validated['language_code']);
+
+        return redirect()->route('feedback.step', ['step' => 'rating']);
+    }
+
+    /* public function fromQr(string $token)
+    {
+        $qr = $this->qrTokens->resolve($token);
+        abort_unless($qr && $qr->isUsable(), 404);
+
+        session(['feedback.qr_token' => $token]);
+        session(['feedback.submission_uuid' => (string) Str::uuid()]);
+
+        return view('feedback.welcome', [
+            'qr' => $qr,
+            'location' => $qr->location?->load(['terminal', 'zone', 'service']),
         ]);
+    } */
+
+  /*   public function start(Request $request)
+    {
+        $validated = $request->validate([
+            'language_code' => ['required', 'in:en,hi,bn'],
+        ]);
+
+        session(['feedback.language_code' => $validated['language_code']]);
 
         if (! session()->has('feedback.submission_uuid')) {
             session(['feedback.submission_uuid' => (string) Str::uuid()]);
@@ -54,24 +77,28 @@ class FeedbackWizardController extends Controller
         app()->setLocale($validated['language_code']);
 
         return redirect()->route('feedback.step', ['step' => 'rating']);
-    }
+    } */
 
     public function step(Request $request, string $step)
     {
-        $allowed = ['rating', 'type', 'category', 'comment', 'contact', 'submit'];
+        $allowed = ['rating', 'type', 'category', 'comment', 'voice', 'photo', 'contact'];
         abort_unless(in_array($step, $allowed, true), 404);
 
-        if ($step !== 'rating' && ! session()->has('feedback.language_code')) {
+        if (! session()->has('feedback.language_code')) {
             return redirect()->route('feedback.welcome');
         }
 
-        $categories = FeedbackCategory::query()
-            ->active()
-            ->get();
+        app()->setLocale(session('feedback.language_code', 'en'));
 
-        return view("feedback.steps.{$step}", [
+        $categories = FeedbackCategory::query()->active()->get();
+        $qr = null;
+        if (session()->has('feedback.qr_token')) {
+            $qr = $this->qrTokens->resolve(session('feedback.qr_token'));
+        }
+
+        return view('feedback.steps.rating', [
             'categories' => $categories,
-            'step' => $step,
+            'qr' => $qr,
         ]);
     }
 

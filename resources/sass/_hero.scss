@@ -1,0 +1,109 @@
+@use 'variables' as v;
+
+.paf-hero {
+    position: relative;
+    border-radius: v.$paf-radius-lg;
+    overflow: hidden;
+    box-shadow: v.$paf-shadow-lg;
+    margin-bottom: 1.25rem;
+    background: v.$paf-primary-dark;
+    aspect-ratio: 16 / 10;
+    isolation: isolate;
+}
+
+.paf-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    transform: scale(1.02);
+    transition: transform 8s v.$paf-ease;
+}
+
+.paf-hero:hover .paf-hero__img {
+    transform: scale(1.06);
+}
+
+.paf-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(11, 61, 145, 0.05) 0%, rgba(5, 28, 71, 0.55) 60%, rgba(5, 28, 71, 0.9) 100%),
+        linear-gradient(90deg, rgba(11, 61, 145, 0.35) 0%, transparent 45%);
+}
+
+.paf-hero__content {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 1.1rem 1.15rem 1.15rem;
+    color: #fff;
+    z-index: 2;
+}
+
+.paf-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: v.$paf-radius-pill;
+    padding: 0.24rem 0.65rem;
+    backdrop-filter: blur(6px);
+    margin-bottom: 0.55rem;
+}
+
+.paf-hero__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 0.25rem;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.paf-hero__subtitle {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    max-width: 42ch;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+.paf-hero__badge {
+    position: absolute;
+    top: 0.85rem;
+    inset-inline-end: 0.85rem;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: v.$paf-gold;
+    color: v.$paf-primary-dark;
+    border-radius: v.$paf-radius-pill;
+    padding: 0.32rem 0.7rem;
+    box-shadow: 0 6px 16px rgba(212, 160, 23, 0.4);
+}
+
+// Small screens — taller aspect
+@media (max-width: 480px) {
+    .paf-hero {
+        aspect-ratio: 4 / 3.4;
+    }
+
+    .paf-hero__img {
+        object-position: center 25%;
+    }
+
+    .paf-hero__title {
+        font-size: 1.1rem;
+    }
+}

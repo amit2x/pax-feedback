@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Feedback;
 use App\Models\FeedbackStatusHistory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class FeedbackSubmissionService
@@ -15,15 +16,29 @@ class FeedbackSubmissionService
         private AttachmentService $attachments,
     ) {}
 
+    /**
+     * Idempotent submission.
+     *
+     * The same submission_uuid from two rapid requests returns the SAME
+     * Feedback row. Different submission_uuids create distinct rows, even
+     * if the rest of the payload is identical.
+     */
     public function submit(array $data): Feedback
     {
-        // Idempotency: same submission_uuid → return existing row.
+        // --- Fast path: same submission_uuid already persisted ---
         $existing = Feedback::where('submission_uuid', $data['submission_uuid'])->first();
         if ($existing) {
             return $existing;
         }
 
         return DB::transaction(function () use ($data) {
+            // Re-check inside the transaction to handle race conditions
+            $existing = Feedback::where('submission_uuid', $data['submission_uuid'])->lockForUpdate()->first();
+            if ($existing) {
+                return $existing;
+            }
+
+            // Resolve QR (if any) — never trust client-supplied location
             $qr = null;
             if (! empty($data['qr_token'])) {
                 $qr = $this->qrTokens->resolve($data['qr_token']);
@@ -32,6 +47,7 @@ class FeedbackSubmissionService
                 }
             }
 
+            // Create the Feedback row
             $feedback = Feedback::create([
                 'uuid' => (string) Str::uuid(),
                 'reference_no' => $this->references->next(),
@@ -63,6 +79,7 @@ class FeedbackSubmissionService
                 'submitted_at' => now(),
             ]);
 
+            // Status history
             FeedbackStatusHistory::create([
                 'feedback_id' => $feedback->id,
                 'from_status' => null,
@@ -71,14 +88,20 @@ class FeedbackSubmissionService
                 'note' => 'Submitted by passenger',
             ]);
 
-            if (! empty($data['voice'])) {
+            // Attachments — fail the whole submission if any fails
+            if (! empty($data['voice']) && $data['voice'] instanceof \Illuminate\Http\UploadedFile) {
                 $this->attachments->store($feedback, $data['voice'], 'voice');
             }
 
-            foreach ($data['photos'] ?? [] as $photo) {
-                $this->attachments->store($feedback, $photo, 'photo');
+            if (! empty($data['photos']) && is_array($data['photos'])) {
+                foreach ($data['photos'] as $photo) {
+                    if ($photo instanceof \Illuminate\Http\UploadedFile) {
+                        $this->attachments->store($feedback, $photo, 'photo');
+                    }
+                }
             }
 
+            // QR usage counter
             if ($qr) {
                 $qr->increment('usage_count');
                 $qr->update(['last_used_at' => now()]);

@@ -15,7 +15,8 @@ class FeedbackQrCode extends Model
 
     protected $fillable = [
         'uuid', 'code', 'token',
-        'token_hash', 'token_prefix', 'type', 'name', 'description',
+        'token_hash',
+        'token_encrypted', 'token_prefix', 'type', 'name', 'description',
         'airport_id', 'terminal_id', 'zone_id', 'location_id', 'service_id',
         'status', 'usage_count', 'last_used_at', 'expires_at',
         'created_by', 'updated_by',
@@ -25,6 +26,7 @@ class FeedbackQrCode extends Model
         'last_used_at' => 'datetime',
         'expires_at' => 'datetime',
         'usage_count' => 'integer',
+        'token_encrypted' => 'encrypted',
     ];
 
     protected $hidden = [
@@ -68,5 +70,14 @@ class FeedbackQrCode extends Model
     {
         return $this->status === 'active'
             && ($this->expires_at === null || $this->expires_at->isFuture());
+    }
+
+    /**
+     * Get the plaintext token (decrypted from storage).
+     * Returns null if the token was created before this column existed.
+     */
+    public function plainToken(): ?string
+    {
+        return $this->token_encrypted ?: null;
     }
 }

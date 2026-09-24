@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar','fa','ur']) ? 'rtl' : 'ltr' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+    dir="{{ in_array(app()->getLocale(), ['ar','fa','ur']) ? 'rtl' : 'ltr' }}">
+
 <head>
     {{-- Core --}}
     <meta charset="utf-8">
@@ -22,6 +24,7 @@
     <meta name="theme-color" content="#0b3d91">
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b1220">
     <meta name="color-scheme" content="light dark">
+
 
     {{-- iOS / PWA --}}
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -61,45 +64,41 @@
     <a href="#paf-content" class="paf-skip">{{ __('messages.skip_to_content') }}</a>
 
     {{-- ============================================================
-         Brand header — logo + animated aircraft takeoff
-         ============================================================ --}}
+    Brand header — logo + animated aircraft takeoff
+    ============================================================ --}}
     <header class="paf-brand-bar" role="banner">
-    {{-- Sky layer: clouds + aircraft + contrail --}}
-    <div class="paf-sky" aria-hidden="true">
-        <span class="paf-cloud paf-cloud--1"></span>
-        <span class="paf-cloud paf-cloud--2"></span>
-        <span class="paf-cloud paf-cloud--3"></span>
+        {{-- Sky layer: clouds + aircraft + contrail --}}
+        <div class="paf-sky" aria-hidden="true">
+            <span class="paf-cloud paf-cloud--1"></span>
+            <span class="paf-cloud paf-cloud--2"></span>
+            <span class="paf-cloud paf-cloud--3"></span>
 
-        <span class="paf-aircraft">
-            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21.5 12c0 .6-.4 1.2-1 1.3l-4.2 1.1-3.4 5.7c-.2.3-.5.5-.9.5h-1.3c-.4 0-.7-.4-.6-.8l1.2-4.8-3.5.9-.9 1.6c-.2.3-.5.5-.9.5h-1c-.3 0-.6-.3-.5-.7l.7-2.5-.7-2.5c-.1-.4.2-.7.5-.7h1c.4 0 .7.2.9.5l.9 1.6 3.5.9-1.2-4.8c-.1-.4.2-.8.6-.8h1.3c.4 0 .7.2.9.5l3.4 5.7 4.2 1.1c.6.1 1 .7 1 1.3z"/>
-            </svg>
-        </span>
-        <span class="paf-trail"></span>
-    </div>
-
-    {{-- Foreground: logo + title --}}
-    <div class="paf-brand-bar__inner">
-        <div class="paf-brand-logo">
-            <img
-                src="{{ asset('images/aai-logo.png') }}"
-                alt="{{ __('messages.brand_subtitle') }}"
-                width="40"
-                height="40"
-                loading="eager"
-                decoding="async">
+            <span class="paf-aircraft">
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M21.5 12c0 .6-.4 1.2-1 1.3l-4.2 1.1-3.4 5.7c-.2.3-.5.5-.9.5h-1.3c-.4 0-.7-.4-.6-.8l1.2-4.8-3.5.9-.9 1.6c-.2.3-.5.5-.9.5h-1c-.3 0-.6-.3-.5-.7l.7-2.5-.7-2.5c-.1-.4.2-.7.5-.7h1c.4 0 .7.2.9.5l.9 1.6 3.5.9-1.2-4.8c-.1-.4.2-.8.6-.8h1.3c.4 0 .7.2.9.5l3.4 5.7 4.2 1.1c.6.1 1 .7 1 1.3z" />
+                </svg>
+            </span>
+            <span class="paf-trail"></span>
         </div>
 
-        <div class="paf-brand-titles">
-            <h1 class="paf-brand-title">{{ __('messages.app_name') }}</h1>
-            <div class="paf-brand-subtitle">{{ __('messages.brand_subtitle') }}</div>
+        {{-- Foreground: logo + title --}}
+        <div class="paf-brand-bar__inner">
+            <div class="paf-brand-logo">
+                <img src="{{ asset('images/aai-logo.png') }}" alt="{{ __('messages.brand_subtitle') }}" width="40"
+                    height="40" loading="eager" decoding="async">
+            </div>
+
+            <div class="paf-brand-titles">
+                <h1 class="paf-brand-title">{{ __('messages.app_name') }}</h1>
+                <div class="paf-brand-subtitle">{{ __('messages.brand_subtitle') }}</div>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
     {{-- ============================================================
-         Main content
-         ============================================================ --}}
+    Main content
+    ============================================================ --}}
     <main id="paf-content" class="paf-main" role="main">
         <div class="paf-container">
             @yield('content')
@@ -107,8 +106,8 @@
     </main>
 
     {{-- ============================================================
-         Footer
-         ============================================================ --}}
+    Footer
+    ============================================================ --}}
     <footer class="paf-footer" role="contentinfo">
         <div>
             &copy; {{ date('Y') }}
@@ -119,7 +118,8 @@
 
         <div class="paf-trust-line">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                <path
+                    d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
             </svg>
             <span>{{ __('messages.privacy_short') }}</span>
         </div>
@@ -133,4 +133,5 @@
 
     @stack('scripts')
 </body>
+
 </html>

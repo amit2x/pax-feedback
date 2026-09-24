@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuditLogger
 {
-    /**
-     * @param  array<string,mixed>  $old
-     * @param  array<string,mixed>  $new
-     */
     public function log(
         string $action,
         ?Model $entity = null,

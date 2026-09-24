@@ -1,74 +1,274 @@
 @use 'variables' as v;
 
 @media (prefers-color-scheme: dark) {
+    // ============================================================
+    // Page canvas
+    // ============================================================
     body.paf-body {
         background:
-            radial-gradient(1200px 600px at 100% -10%, rgba(25, 118, 210, 0.12), transparent 60%),
-            radial-gradient(900px 500px at -10% 110%, rgba(11, 61, 145, 0.18), transparent 55%),
+            radial-gradient(1200px 600px at 100% -10%, rgba(25, 118, 210, 0.14), transparent 60%),
+            radial-gradient(900px 500px at -10% 110%, rgba(11, 61, 145, 0.20), transparent 55%),
             v.$paf-dark-bg;
         color: v.$paf-dark-text;
     }
 
+    // ============================================================
+    // Cards
+    // ============================================================
     .paf-card {
         background: v.$paf-dark-card-bg;
         border-color: v.$paf-dark-border;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+        color: v.$paf-dark-text;
 
         &:hover {
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
         }
     }
 
+    .paf-card--accent {
+        background: linear-gradient(180deg, v.$paf-dark-card-bg 0%, #0f1a33 100%);
+        border-color: rgba(25, 118, 210, 0.4);
+    }
+
+    // ============================================================
+    // Headings and text
+    // ============================================================
     .paf-step-title,
-    .paf-share-label,
-    .paf-type-label {
+    .paf-admin-title,
+    h1, h2, h3, h4, h5, h6 {
         color: v.$paf-dark-text;
     }
 
     .paf-step-hint,
     .paf-rating-labels,
     .paf-counter,
-    .paf-consent {
-        color: v.$paf-dark-muted;
+    .paf-consent,
+    .text-muted,
+    .small.text-muted {
+        color: v.$paf-dark-muted !important;
     }
 
-    .paf-rating-button,
-    .paf-type-card,
-    .paf-media-tile {
+    .paf-comment-block {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: v.$paf-dark-border;
+        color: v.$paf-dark-text-soft;
+    }
+
+    // ============================================================
+    // Rating buttons
+    // ============================================================
+    .paf-rating-button {
         background: v.$paf-dark-bg-elevated;
         border-color: v.$paf-dark-border-strong;
         color: v.$paf-dark-text;
+
+        &:hover {
+            border-color: v.$paf-accent;
+        }
+
+        &.is-selected {
+            background: rgba(25, 118, 210, 0.20);
+            border-color: v.$paf-accent;
+            box-shadow: 0 6px 18px rgba(25, 118, 210, 0.25);
+        }
     }
 
-    .paf-rating-button.is-selected,
-    .paf-type-card.is-selected {
-        background: rgba(25, 118, 210, 0.18);
-        border-color: v.$paf-accent;
+    // ============================================================
+    // Type / category / choice cards
+    // ⚠️ THIS WAS THE MAIN BUG — label color was unset
+    // ============================================================
+    .paf-type-card {
+        background: v.$paf-dark-bg-elevated;
+        border-color: v.$paf-dark-border-strong;
+        color: v.$paf-dark-text;
+
+        &:hover {
+            border-color: v.$paf-accent;
+            background: rgba(25, 118, 210, 0.10);
+        }
+
+        &.is-selected {
+            background: rgba(25, 118, 210, 0.22);
+            border-color: v.$paf-accent;
+        }
+
+        .paf-type-icon {
+            filter: brightness(1.1);
+        }
+
+        .paf-type-label {
+            color: v.$paf-dark-text !important;   // ← critical fix
+            font-weight: 600;
+        }
     }
 
+    // ============================================================
+    // Progress bar
+    // ============================================================
     .paf-progress {
         background: v.$paf-dark-border;
     }
 
+    // ============================================================
+    // Form controls
+    // ============================================================
+    .form-label,
+    label {
+        color: v.$paf-dark-text-soft;
+    }
+
     .form-control,
-    .form-select {
+    .form-select,
+    textarea.form-control {
         background: v.$paf-dark-bg-elevated;
         border-color: v.$paf-dark-border-strong;
         color: v.$paf-dark-text;
 
         &::placeholder {
             color: v.$paf-dark-muted;
+            opacity: 1;   // Firefox reduces placeholder opacity by default
         }
 
         &:focus {
             background: v.$paf-dark-bg-elevated;
             color: v.$paf-dark-text;
             border-color: v.$paf-accent;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.25);
+        }
+
+        &:disabled,
+        &[readonly] {
+            background: rgba(255, 255, 255, 0.04);
+            color: v.$paf-dark-muted;
         }
     }
 
+    .form-select {
+        // Ensure the dropdown arrow is visible
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%238b97b5' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+    }
+
+    // ============================================================
+    // Media tiles (voice / photo pickers)
+    // ============================================================
+    .paf-media-tile {
+        background: v.$paf-dark-bg-elevated;
+        border-color: v.$paf-dark-border-strong;
+        color: v.$paf-dark-text;
+
+        &:hover {
+            background: rgba(25, 118, 210, 0.12);
+            border-color: v.$paf-accent;
+        }
+
+        .paf-media-icon {
+            filter: brightness(1.15);
+        }
+
+        .paf-media-label {
+            color: v.$paf-dark-text;
+        }
+
+        .paf-media-hint {
+            color: v.$paf-dark-muted;
+        }
+    }
+
+    // ============================================================
+    // Share step accordion
+    // ============================================================
+    .paf-share-label {
+        color: v.$paf-dark-text;
+
+        .paf-share-optional {
+            background: rgba(255, 255, 255, 0.06);
+            color: v.$paf-dark-muted;
+        }
+    }
+
+    .paf-accordion-toggle {
+        background: v.$paf-dark-bg-elevated;
+        border-color: v.$paf-dark-border-strong;
+        color: v.$paf-dark-text;
+
+        &:hover {
+            background: rgba(25, 118, 210, 0.14);
+            border-color: rgba(25, 118, 210, 0.45);
+        }
+
+        .paf-accordion-title {
+            color: v.$paf-dark-text;
+        }
+
+        .paf-share-optional {
+            background: rgba(255, 255, 255, 0.06);
+            color: v.$paf-dark-muted;
+        }
+
+        .paf-accordion-chevron {
+            color: v.$paf-dark-muted;
+        }
+    }
+
+    [data-accordion].is-open .paf-accordion-toggle {
+        background: rgba(25, 118, 210, 0.18);
+        border-color: rgba(25, 118, 210, 0.5);
+    }
+
+    .paf-accordion-panel {
+        background: v.$paf-dark-card-bg;
+        border-color: v.$paf-dark-border-strong;
+    }
+
+    .paf-accordion-badge {
+        background: rgba(22, 163, 74, 0.15);
+        border-color: rgba(22, 163, 74, 0.4);
+        color: #6ee7a4;
+    }
+
+    // ============================================================
+    // Reference box
+    // ============================================================
+    .paf-reference-box {
+        background: rgba(25, 118, 210, 0.14);
+        color: #8ab6f2;
+        border-color: rgba(138, 182, 242, 0.4);
+    }
+
+    // ============================================================
+    // Buttons — ensure text stays readable
+    // ============================================================
+    .btn.paf-btn-primary,
+    button.paf-btn-primary {
+        color: #ffffff;
+    }
+
+    .btn.paf-btn-outline,
+    button.paf-btn-outline,
+    .paf-footer-actions .btn-outline-secondary {
+        color: v.$paf-dark-text;
+        background: v.$paf-dark-bg-elevated;
+        border-color: v.$paf-dark-border-strong;
+
+        &:hover,
+        &:focus,
+        &:focus-visible {
+            color: #ffffff;
+            background: v.$paf-primary;
+            border-color: v.$paf-primary;
+        }
+    }
+
+    .btn-danger {
+        color: #ffffff;
+    }
+
+    // ============================================================
+    // Trust line / footer
+    // ============================================================
     .paf-trust-line {
-        background: rgba(22, 33, 59, 0.6);
+        background: rgba(22, 33, 59, 0.7);
         border-color: v.$paf-dark-border;
         color: v.$paf-dark-muted;
     }
@@ -78,12 +278,221 @@
 
         a {
             color: #7fb0f0;
+
+            &:hover {
+                color: #a5c8f7;
+            }
         }
     }
 
-    .paf-reference-box {
-        background: rgba(25, 118, 210, 0.14);
-        color: #8ab6f2;
-        border-color: rgba(138, 182, 242, 0.4);
+    .paf-footer-meta {
+        color: v.$paf-dark-muted;
+    }
+
+    // ============================================================
+    // Audio preview
+    // ============================================================
+    .paf-audio-preview {
+        filter: invert(0.9) hue-rotate(180deg);
+    }
+
+    // ============================================================
+    // Alerts
+    // ============================================================
+    .alert {
+        color: v.$paf-dark-text;
+        border-color: v.$paf-dark-border-strong;
+    }
+
+    .alert-danger {
+        background: rgba(220, 38, 38, 0.15);
+        color: #fca5a5;
+    }
+
+    .alert-success {
+        background: rgba(22, 163, 74, 0.15);
+        color: #86efac;
+    }
+
+    .alert-warning {
+        background: rgba(245, 158, 11, 0.15);
+        color: #fcd34d;
+    }
+
+    .alert-info {
+        background: rgba(14, 165, 233, 0.15);
+        color: #7dd3fc;
+    }
+
+    // ============================================================
+    // Admin panels (in case admin UI is viewed in dark mode)
+    // ============================================================
+    .paf-admin-body {
+        background: v.$paf-dark-bg;
+    }
+
+    .paf-admin-sidebar {
+        background: v.$paf-dark-card-bg;
+    }
+
+    .paf-sidebar-link {
+        color: v.$paf-dark-text-soft;
+
+        &:hover {
+            background: rgba(25, 118, 210, 0.14);
+            color: #7fb0f0;
+        }
+
+        &.is-active {
+            background: v.$paf-primary;
+            color: #ffffff;
+        }
+    }
+
+    .paf-stat-card {
+        background: v.$paf-dark-card-bg;
+        border-color: v.$paf-dark-border;
+        color: v.$paf-dark-text;
+
+        &.paf-stat-card--accent {
+            background: linear-gradient(180deg, rgba(25, 118, 210, 0.22) 0%, rgba(25, 118, 210, 0.12) 100%);
+            border-color: rgba(25, 118, 210, 0.4);
+        }
+
+        &.paf-stat-card--danger {
+            background: linear-gradient(180deg, rgba(220, 38, 38, 0.18) 0%, rgba(220, 38, 38, 0.08) 100%);
+            border-color: rgba(220, 38, 38, 0.35);
+        }
+
+        &.paf-stat-card--success {
+            background: linear-gradient(180deg, rgba(22, 163, 74, 0.18) 0%, rgba(22, 163, 74, 0.08) 100%);
+            border-color: rgba(22, 163, 74, 0.35);
+        }
+
+        &.paf-stat-card--info {
+            background: linear-gradient(180deg, rgba(14, 165, 233, 0.18) 0%, rgba(14, 165, 233, 0.08) 100%);
+            border-color: rgba(14, 165, 233, 0.35);
+        }
+    }
+
+    .paf-stat-label {
+        color: v.$paf-dark-muted;
+    }
+
+    .paf-stat-value {
+        color: v.$paf-dark-text;
+    }
+
+    // Tables
+    .table {
+        color: v.$paf-dark-text;
+
+        thead th {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: v.$paf-dark-border-strong !important;
+            color: v.$paf-dark-muted;
+        }
+
+        tbody td {
+            border-color: v.$paf-dark-border;
+            color: v.$paf-dark-text;
+        }
+
+        tbody tr:hover td {
+            background: rgba(255, 255, 255, 0.04);
+        }
+    }
+
+    .table > :not(caption) > * > * {
+        background-color: transparent;
+        color: v.$paf-dark-text;
+    }
+
+    // Admin input fields
+    .paf-filter-form {
+        label {
+            color: v.$paf-dark-muted;
+        }
+    }
+
+    // Timeline
+    .paf-timeline::before {
+        background: v.$paf-dark-border-strong;
+    }
+
+    .paf-timeline-item::before {
+        background: v.$paf-accent;
+        border-color: v.$paf-dark-card-bg;
+        box-shadow: 0 0 0 2px v.$paf-dark-border-strong;
+    }
+
+    .paf-timeline-time {
+        color: v.$paf-dark-muted;
+    }
+
+    .paf-timeline-body {
+        color: v.$paf-dark-text-soft;
+    }
+
+    // Detail items
+    .paf-detail-label {
+        color: v.$paf-dark-muted;
+    }
+
+    .paf-detail-value {
+        color: v.$paf-dark-text;
+    }
+
+    // Empty state
+    .paf-empty {
+        color: v.$paf-dark-muted;
+    }
+
+    // Admin page header subtitle link
+    .paf-admin-page-header a.small.text-muted {
+        color: v.$paf-dark-muted !important;
+
+        &:hover {
+            color: v.$paf-accent;
+        }
+    }
+
+    // ============================================================
+    // DataTables dark theme
+    // ============================================================
+    .dataTables_wrapper {
+        .dataTables_info,
+        .dataTables_length,
+        .dataTables_filter {
+            color: v.$paf-dark-muted;
+        }
+
+        .dataTables_filter input,
+        .dataTables_length select {
+            background: v.$paf-dark-bg-elevated;
+            border-color: v.$paf-dark-border-strong;
+            color: v.$paf-dark-text;
+
+            &::placeholder {
+                color: v.$paf-dark-muted;
+            }
+        }
+
+        .pagination .page-link {
+            background: v.$paf-dark-bg-elevated;
+            border-color: v.$paf-dark-border-strong;
+            color: v.$paf-dark-text-soft;
+
+            &:hover {
+                background: rgba(25, 118, 210, 0.2);
+                color: #ffffff;
+            }
+        }
+
+        .pagination .page-item.active .page-link {
+            background: v.$paf-primary;
+            border-color: v.$paf-primary;
+            color: #ffffff;
+        }
     }
 }

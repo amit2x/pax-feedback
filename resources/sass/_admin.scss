@@ -1,0 +1,637 @@
+@use 'variables' as v;
+
+.paf-admin-body {
+    background: #eef2f8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+// ============================================================
+// Admin header
+// ============================================================
+.paf-admin-header {
+    background: linear-gradient(135deg, v.$paf-primary 0%, v.$paf-primary-dark 100%);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 2px 8px rgba(11, 61, 145, 0.18);
+}
+
+.paf-admin-header__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0.7rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.paf-admin-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    color: #fff;
+
+    &__logo {
+        width: 36px;
+        height: 36px;
+        background: #fff;
+        border-radius: 9px;
+        display: grid;
+        place-items: center;
+        padding: 4px;
+
+        img { width: 100%; height: 100%; object-fit: contain; }
+    }
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.15;
+    }
+
+    &__title {
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    &__subtitle {
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: rgba(255, 255, 255, 0.72);
+        font-weight: 500;
+    }
+}
+
+.paf-admin-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    &__name {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    &__logout {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #fff;
+        padding: 0.35rem 0.85rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background v.$paf-duration-fast v.$paf-ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+    }
+}
+
+// ============================================================
+// Layout
+// ============================================================
+.paf-admin-layout {
+    flex: 1 1 auto;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1.25rem 1rem;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.paf-admin-sidebar {
+    background: #fff;
+    border-radius: v.$paf-radius;
+    padding: 0.75rem;
+    box-shadow: v.$paf-shadow-sm;
+    position: sticky;
+    top: 76px;
+}
+
+.paf-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.paf-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    color: v.$paf-text-soft;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background v.$paf-duration-fast v.$paf-ease,
+        color v.$paf-duration-fast v.$paf-ease;
+
+    &:hover {
+        background: v.$paf-accent-light;
+        color: v.$paf-primary;
+    }
+
+    &.is-active {
+        background: v.$paf-primary;
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(11, 61, 145, 0.22);
+    }
+
+    .paf-sidebar-icon {
+        font-size: 1rem;
+    }
+}
+
+.paf-admin-main {
+    min-width: 0;
+}
+
+.paf-admin-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: v.$paf-text;
+}
+
+// ============================================================
+// Stats
+// ============================================================
+.paf-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.85rem;
+}
+
+.paf-stat-card {
+    background: #fff;
+    border: 1px solid v.$paf-border;
+    border-radius: v.$paf-radius-sm;
+    padding: 1rem;
+    box-shadow: v.$paf-shadow-xs;
+    transition: transform v.$paf-duration-fast v.$paf-ease,
+        box-shadow v.$paf-duration-fast v.$paf-ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: v.$paf-shadow-sm;
+    }
+
+    &.paf-stat-card--accent {
+        background: linear-gradient(180deg, #e8f1ff 0%, #dbe8fb 100%);
+        border-color: rgba(25, 118, 210, 0.2);
+    }
+
+    &.paf-stat-card--danger {
+        background: linear-gradient(180deg, #fff 0%, #fef2f2 100%);
+        border-color: rgba(220, 38, 38, 0.2);
+    }
+
+    &.paf-stat-card--success {
+        background: linear-gradient(180deg, #fff 0%, #ecfdf5 100%);
+        border-color: rgba(22, 163, 74, 0.2);
+    }
+
+    &.paf-stat-card--info {
+        background: linear-gradient(180deg, #fff 0%, #f0f9ff 100%);
+        border-color: rgba(14, 165, 233, 0.2);
+    }
+}
+
+.paf-stat-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: v.$paf-muted;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.paf-stat-value {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: v.$paf-text;
+    line-height: 1;
+}
+
+.paf-admin-footer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: v.$paf-muted;
+    padding: 1rem;
+}
+
+// ============================================================
+// Responsive
+// ============================================================
+@media (max-width: 768px) {
+    .paf-admin-layout {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .paf-admin-sidebar {
+        position: static;
+        overflow-x: auto;
+    }
+
+    .paf-sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .paf-sidebar-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.82rem;
+        white-space: nowrap;
+
+        span:not(.paf-sidebar-icon) {
+            display: none;
+        }
+    }
+}
+
+// ============================================================
+// Admin page title bar (with actions on the right)
+// ============================================================
+.paf-admin-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.paf-admin-page-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+// ============================================================
+// Filter card
+// ============================================================
+.paf-filter-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.75rem;
+    align-items: end;
+
+    .paf-filter-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: v.$paf-muted;
+        }
+    }
+
+    .paf-filter-actions {
+        display: flex;
+        gap: 0.4rem;
+        align-items: flex-end;
+    }
+}
+
+// ============================================================
+// DataTables theming
+// ============================================================
+table.dataTable {
+    font-size: 0.9rem;
+
+    thead th {
+        background: #f8fafc;
+        border-bottom: 2px solid v.$paf-border !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: v.$paf-muted;
+        padding: 0.65rem 0.5rem !important;
+        white-space: nowrap;
+    }
+
+    tbody td {
+        padding: 0.7rem 0.5rem !important;
+        vertical-align: middle;
+        border-color: v.$paf-border;
+    }
+
+    tbody tr:hover td {
+        background: #f8fafc;
+    }
+
+    code {
+        font-size: 0.8rem;
+        background: v.$paf-accent-light;
+        color: v.$paf-primary;
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+    }
+}
+
+.dataTables_wrapper {
+    .dataTables_filter input {
+        border-radius: 8px;
+        border: 1px solid v.$paf-border;
+        padding: 0.4rem 0.75rem;
+        font-size: 0.85rem;
+        min-width: 220px;
+
+        &:focus {
+            border-color: v.$paf-accent;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+            outline: 0;
+        }
+    }
+
+    .dataTables_length select {
+        border-radius: 8px;
+        border: 1px solid v.$paf-border;
+        padding: 0.35rem 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .dataTables_info,
+    .dataTables_length,
+    .dataTables_filter {
+        font-size: 0.82rem;
+        color: v.$paf-muted;
+        margin-bottom: 0.75rem;
+    }
+
+    .pagination {
+        margin: 0;
+
+        .page-link {
+            border-radius: 8px !important;
+            margin: 0 2px;
+            border-color: v.$paf-border;
+            color: v.$paf-text-soft;
+            font-size: 0.85rem;
+            padding: 0.35rem 0.65rem;
+
+            &:hover {
+                background: v.$paf-accent-light;
+                border-color: v.$paf-accent;
+                color: v.$paf-primary;
+            }
+        }
+
+        .page-item.active .page-link {
+            background: v.$paf-primary;
+            border-color: v.$paf-primary;
+            color: #fff;
+        }
+
+        .page-item.disabled .page-link {
+            color: v.$paf-muted;
+            opacity: 0.5;
+        }
+    }
+}
+
+.paf-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid v.$paf-border-strong;
+    border-top-color: v.$paf-primary;
+    border-radius: 50%;
+    animation: paf-spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-inline-end: 4px;
+}
+
+@keyframes paf-spin {
+    to { transform: rotate(360deg); }
+}
+
+// ============================================================
+// Badges
+// ============================================================
+.paf-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 999px;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+
+    &--compliment { background: #ecfdf5; color: #047857; }
+    &--suggestion { background: #eff6ff; color: #1d4ed8; }
+    &--complaint  { background: #fef2f2; color: #b91c1c; }
+    &--query      { background: #fef9c3; color: #92400e; }
+
+    &--status-submitted    { background: #f1f5f9; color: #475569; }
+    &--status-acknowledged { background: #e0e7ff; color: #3730a3; }
+    &--status-assigned     { background: #dbeafe; color: #1e40af; }
+    &--status-in_progress  { background: #fef3c7; color: #92400e; }
+    &--status-resolved     { background: #d1fae5; color: #065f46; }
+    &--status-closed       { background: #e5e7eb; color: #374151; }
+
+    &--priority-low      { background: #f1f5f9; color: #475569; }
+    &--priority-medium   { background: #dbeafe; color: #1e40af; }
+    &--priority-high     { background: #fed7aa; color: #9a3412; }
+    &--priority-critical { background: #fecaca; color: #991b1b; }
+}
+
+// ============================================================
+// Rating pill
+// ============================================================
+.paf-rating-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: v.$paf-text;
+
+    &.is-low    { background: #fef2f2; color: #b91c1c; }
+    &.is-mid    { background: #fef9c3; color: #92400e; }
+    &.is-high   { background: #ecfdf5; color: #047857; }
+}
+
+// ============================================================
+// Detail grid
+// ============================================================
+.paf-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.paf-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+
+    .paf-detail-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: v.$paf-muted;
+        font-weight: 600;
+    }
+
+    .paf-detail-value {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: v.$paf-text;
+        word-break: break-word;
+    }
+}
+
+.paf-comment-block {
+    background: #fbfcfe;
+    border: 1px solid v.$paf-border;
+    border-radius: v.$paf-radius-sm;
+    padding: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: v.$paf-text-soft;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+// ============================================================
+// Attachments gallery
+// ============================================================
+.paf-attachment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+}
+
+.paf-attachment-card {
+    background: #fff;
+    border: 1px solid v.$paf-border;
+    border-radius: v.$paf-radius-sm;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        display: block;
+    }
+
+    .paf-attachment-meta {
+        padding: 0.5rem 0.65rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        font-size: 0.75rem;
+
+        .paf-attachment-type {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: v.$paf-muted;
+        }
+
+        .paf-attachment-size {
+            color: v.$paf-muted;
+        }
+
+        .paf-attachment-action {
+            margin-top: 0.35rem;
+            font-size: 0.75rem;
+            color: v.$paf-primary;
+            text-decoration: none;
+            font-weight: 600;
+
+            &:hover { text-decoration: underline; }
+        }
+    }
+}
+
+// ============================================================
+// Timeline (status history)
+// ============================================================
+.paf-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    position: relative;
+    padding-left: 1.25rem;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0.4rem;
+        top: 0.5rem;
+        bottom: 0.5rem;
+        width: 2px;
+        background: v.$paf-border;
+    }
+}
+
+.paf-timeline-item {
+    position: relative;
+    font-size: 0.85rem;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: -1rem;
+        top: 0.35rem;
+        width: 10px;
+        height: 10px;
+        background: v.$paf-primary;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 2px v.$paf-border;
+    }
+
+    .paf-timeline-time {
+        font-size: 0.72rem;
+        color: v.$paf-muted;
+        margin-bottom: 0.1rem;
+    }
+
+    .paf-timeline-body {
+        color: v.$paf-text-soft;
+    }
+}
+
+// ============================================================
+// Empty state
+// ============================================================
+.paf-empty {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: v.$paf-muted;
+
+    .paf-empty-icon {
+        font-size: 2.5rem;
+        display: block;
+        margin-bottom: 0.5rem;
+        opacity: 0.6;
+    }
+}

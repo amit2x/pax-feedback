@@ -11,6 +11,11 @@ class QrTokenService
     public const PREFIX_LENGTH = 6;
 
     /**
+     * Generate a new token.
+     *
+     * Returns the PLAIN token. The model's `encrypted` cast handles
+     * at-rest encryption when the value is assigned to `token_encrypted`.
+     *
      * @return array{plain: string, hash: string, prefix: string}
      */
     public function generate(): array
@@ -42,6 +47,11 @@ class QrTokenService
             ->where('token_prefix', $prefix)
             ->where('token_hash', $hash)
             ->first();
+    }
+
+    public function publicUrl(string $plainToken): string
+    {
+        return url('/feedback/f/'.$plainToken);
     }
 
     private function randomBase62(int $length): string

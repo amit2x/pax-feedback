@@ -70,7 +70,12 @@
         <span class="paf-cloud paf-cloud--2"></span>
         <span class="paf-cloud paf-cloud--3"></span>
 
-
+        <span class="paf-aircraft">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.5 12c0 .6-.4 1.2-1 1.3l-4.2 1.1-3.4 5.7c-.2.3-.5.5-.9.5h-1.3c-.4 0-.7-.4-.6-.8l1.2-4.8-3.5.9-.9 1.6c-.2.3-.5.5-.9.5h-1c-.3 0-.6-.3-.5-.7l.7-2.5-.7-2.5c-.1-.4.2-.7.5-.7h1c.4 0 .7.2.9.5l.9 1.6 3.5.9-1.2-4.8c-.1-.4.2-.8.6-.8h1.3c.4 0 .7.2.9.5l3.4 5.7 4.2 1.1c.6.1 1 .7 1 1.3z"/>
+            </svg>
+        </span>
+        <span class="paf-trail"></span>
     </div>
 
     {{-- Foreground: logo + title --}}

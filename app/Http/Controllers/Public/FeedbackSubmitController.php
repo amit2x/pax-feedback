@@ -59,7 +59,7 @@ class FeedbackSubmitController extends Controller
         session()->forget([
             'feedback.qr_token',
             'feedback.submission_uuid',
-            'feedback.language_code',
+            // 'feedback.language_code',
             'feedback.category_id',
             'feedback.subcategory_id',
         ]);

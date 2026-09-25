@@ -1,0 +1,212 @@
+// ============================================================
+// THEME TOKENS — priority order:
+//   1. [data-theme='dark']       — explicit user choice (dark)
+//   2. [data-theme='light']      — explicit user choice (light)
+//   3. @media (prefers-color-scheme: dark) with no [data-theme]
+//   4. Default (:root)           — light
+// ============================================================
+
+// ---------- 1. Default (light) ----------
+:root {
+    --adm-bg: #f1f5f9;
+    --adm-sidebar-bg: #ffffff;
+    --adm-sidebar-border: #e2e8f0;
+    --adm-sidebar-link: #334155;
+    --adm-sidebar-link-hover-bg: #eef2f7;
+    --adm-sidebar-link-active-bg: #e6f0fc;
+    --adm-sidebar-link-active-text: #0b3d91;
+
+    --adm-card-bg: #ffffff;
+    --adm-card-border: #e2e8f0;
+    --adm-card-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+
+    --adm-text: #0f172a;
+    --adm-text-soft: #334155;
+    --adm-text-muted: #64748b;
+
+    --adm-table-head-bg: #f8fafc;
+    --adm-table-head-text: #475569;
+    --adm-table-row-bg: #ffffff;
+    --adm-table-row-alt-bg: #fbfcfe;
+    --adm-table-row-hover-bg: #eff6ff;
+    --adm-table-border: #e2e8f0;
+
+    --adm-input-bg: #ffffff;
+    --adm-input-border: #cbd5e1;
+    --adm-input-text: #0f172a;
+    --adm-input-placeholder: #94a3b8;
+
+    --adm-btn-primary-bg: #0b3d91;
+    --adm-btn-primary-hover-bg: #093272;
+    --adm-btn-primary-text: #ffffff;
+
+    --adm-header-bg: #0b3d91;
+    --adm-header-text: #ffffff;
+
+    color-scheme: light;
+}
+
+// ---------- 2. Explicit dark (user chose) ----------
+[data-theme='dark'] {
+    --adm-bg: #0b1220;
+    --adm-sidebar-bg: #111a2e;
+    --adm-sidebar-border: #1f2b48;
+    --adm-sidebar-link: #c3cee6;
+    --adm-sidebar-link-hover-bg: #1a2542;
+    --adm-sidebar-link-active-bg: rgba(25, 118, 210, 0.18);
+    --adm-sidebar-link-active-text: #8ab6f2;
+
+    --adm-card-bg: #16213b;
+    --adm-card-border: #1f2b48;
+    --adm-card-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+
+    --adm-text: #e8eefc;
+    --adm-text-soft: #c3cee6;
+    --adm-text-muted: #8b97b5;
+
+    --adm-table-head-bg: #1a2542;
+    --adm-table-head-text: #c3cee6;
+    --adm-table-row-bg: #16213b;
+    --adm-table-row-alt-bg: #182547;
+    --adm-table-row-hover-bg: rgba(25, 118, 210, 0.14);
+    --adm-table-border: #1f2b48;
+
+    --adm-input-bg: #0f1a30;
+    --adm-input-border: #2c3a5c;
+    --adm-input-text: #e8eefc;
+    --adm-input-placeholder: #6b7a9c;
+
+    --adm-btn-primary-bg: #1e5bc6;
+    --adm-btn-primary-hover-bg: #2970d8;
+    --adm-btn-primary-text: #ffffff;
+
+    --adm-header-bg: #093272;
+    --adm-header-text: #ffffff;
+
+    color-scheme: dark;
+}
+
+// ---------- 3. Explicit light (overrides system) ----------
+[data-theme='light'] {
+    // Same as :root — declared separately so it overrides the media query below
+    --adm-bg: #f1f5f9;
+    --adm-sidebar-bg: #ffffff;
+    --adm-sidebar-border: #e2e8f0;
+    --adm-sidebar-link: #334155;
+    --adm-sidebar-link-hover-bg: #eef2f7;
+    --adm-sidebar-link-active-bg: #e6f0fc;
+    --adm-sidebar-link-active-text: #0b3d91;
+
+    --adm-card-bg: #ffffff;
+    --adm-card-border: #e2e8f0;
+    --adm-card-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+
+    --adm-text: #0f172a;
+    --adm-text-soft: #334155;
+    --adm-text-muted: #64748b;
+
+    --adm-table-head-bg: #f8fafc;
+    --adm-table-head-text: #475569;
+    --adm-table-row-bg: #ffffff;
+    --adm-table-row-alt-bg: #fbfcfe;
+    --adm-table-row-hover-bg: #eff6ff;
+    --adm-table-border: #e2e8f0;
+
+    --adm-input-bg: #ffffff;
+    --adm-input-border: #cbd5e1;
+    --adm-input-text: #0f172a;
+    --adm-input-placeholder: #94a3b8;
+
+    --adm-btn-primary-bg: #0b3d91;
+    --adm-btn-primary-hover-bg: #093272;
+    --adm-btn-primary-text: #ffffff;
+
+    --adm-header-bg: #0b3d91;
+    --adm-header-text: #ffffff;
+
+    color-scheme: light;
+}
+
+// ---------- 4. System preference (only when no data-theme attribute) ----------
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme]) {
+        --adm-bg: #0b1220;
+        --adm-sidebar-bg: #111a2e;
+        --adm-sidebar-border: #1f2b48;
+        --adm-sidebar-link: #c3cee6;
+        --adm-sidebar-link-hover-bg: #1a2542;
+        --adm-sidebar-link-active-bg: rgba(25, 118, 210, 0.18);
+        --adm-sidebar-link-active-text: #8ab6f2;
+
+        --adm-card-bg: #16213b;
+        --adm-card-border: #1f2b48;
+        --adm-card-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+
+        --adm-text: #e8eefc;
+        --adm-text-soft: #c3cee6;
+        --adm-text-muted: #8b97b5;
+
+        --adm-table-head-bg: #1a2542;
+        --adm-table-head-text: #c3cee6;
+        --adm-table-row-bg: #16213b;
+        --adm-table-row-alt-bg: #182547;
+        --adm-table-row-hover-bg: rgba(25, 118, 210, 0.14);
+        --adm-table-border: #1f2b48;
+
+        --adm-input-bg: #0f1a30;
+        --adm-input-border: #2c3a5c;
+        --adm-input-text: #e8eefc;
+        --adm-input-placeholder: #6b7a9c;
+
+        --adm-btn-primary-bg: #1e5bc6;
+        --adm-btn-primary-hover-bg: #2970d8;
+        --adm-btn-primary-text: #ffffff;
+
+        --adm-header-bg: #093272;
+        --adm-header-text: #ffffff;
+
+        color-scheme: dark;
+    }
+}
+
+
+// ============================================================
+// Bootstrap 5 table variable overrides
+// Bootstrap reads cell bg/color from --bs-table-* — we override
+// them so .table.table-striped etc. respect our theme.
+// ============================================================
+
+:root,
+[data-theme='light'] {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--adm-text);
+    --bs-table-border-color: var(--adm-table-border);
+    --bs-table-striped-bg: var(--adm-table-row-alt-bg);
+    --bs-table-striped-color: var(--adm-text);
+    --bs-table-hover-bg: var(--adm-table-row-hover-bg);
+    --bs-table-hover-color: var(--adm-text);
+}
+
+[data-theme='dark'] {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--adm-text);
+    --bs-table-border-color: var(--adm-table-border);
+    --bs-table-striped-bg: var(--adm-table-row-alt-bg);
+    --bs-table-striped-color: var(--adm-text);
+    --bs-table-hover-bg: var(--adm-table-row-hover-bg);
+    --bs-table-hover-color: var(--adm-text);
+    --bs-table-active-bg: var(--adm-table-row-hover-bg);
+    --bs-table-active-color: var(--adm-text);
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme]) {
+        --bs-table-bg: transparent;
+        --bs-table-color: var(--adm-text);
+        --bs-table-border-color: var(--adm-table-border);
+        --bs-table-striped-bg: var(--adm-table-row-alt-bg);
+        --bs-table-striped-color: var(--adm-text);
+        --bs-table-hover-bg: var(--adm-table-row-hover-bg);
+        --bs-table-hover-color: var(--adm-text);
+    }
+}

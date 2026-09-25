@@ -79,15 +79,17 @@
                 </button>
             </div>
         </form>
-    </div>
-
-    {{-- Trust strip --}}
-    <div class="text-center mt-2">
-        <div class="paf-trust-line" style="display:inline-flex;">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+        {{-- Trust strip --}}
+        <div class="text-center mt-2">
+            <div class="paf-trust-line" style="display:inline-flex;">
+                <svg viewBox="0 0 24 24" fill="#16A34A" aria-hidden="true">
+                <path
+                    d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
             </svg>
-            <span>{{ __('messages.privacy_short') }}</span>
+                <span>{{ __('messages.privacy_short') }}</span>
+            </div>
         </div>
     </div>
+
+
 @endsection

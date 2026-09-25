@@ -857,3 +857,130 @@ button.paf-btn-outline {
         }
     }
 }
+
+// ============================================================
+// Animated success checkmark (thank-you page)
+// ============================================================
+.paf-success-anim {
+    display: block;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 0.5rem;
+    color: v.$paf-success;
+    position: relative;
+
+    svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+        overflow: visible;
+    }
+
+    // Circle draws in (using normalized pathLength=1)
+    .paf-success-circle {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        animation: paf-draw-stroke 0.75s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+
+    // Checkmark draws in after circle finishes
+    .paf-success-check {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        animation: paf-draw-stroke 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.75s forwards;
+    }
+
+    // Ring pulses outward
+    .paf-success-ring {
+        opacity: 0;
+        transform-origin: 60px 60px;
+        animation: paf-ring-pulse 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.9s forwards;
+    }
+
+    // Sparkles pop in
+    .paf-success-spark {
+        opacity: 0;
+        transform-origin: center;
+        transform-box: fill-box;
+        animation: paf-spark 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+
+        &.paf-spark-1 { animation-delay: 1.15s; }
+        &.paf-spark-2 { animation-delay: 1.30s; }
+        &.paf-spark-3 { animation-delay: 1.45s; }
+    }
+}
+
+// Single keyframe reused for both circle and checkmark draw
+@keyframes paf-draw-stroke {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes paf-ring-pulse {
+    0% {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+    35% {
+        opacity: 0.65;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.22);
+    }
+}
+
+@keyframes paf-spark {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.4);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+// Success card fade-up
+.paf-success-card {
+    animation: paf-fade-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+}
+
+@keyframes paf-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Accessibility: respect reduced-motion preference
+@media (prefers-reduced-motion: reduce) {
+    .paf-success-anim {
+        .paf-success-circle,
+        .paf-success-check,
+        .paf-success-ring,
+        .paf-success-spark {
+            animation: none !important;
+            opacity: 1 !important;
+            stroke-dashoffset: 0 !important;
+        }
+
+        .paf-success-ring {
+            opacity: 0.35;
+        }
+    }
+
+    .paf-success-card {
+        animation: none !important;
+    }
+}

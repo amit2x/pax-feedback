@@ -20,4 +20,9 @@ class FeedbackDepartment extends Model
     ];
 
     protected $casts = ['is_active' => 'boolean'];
+
+    public function categories()
+    {
+        return $this->hasMany(FeedbackCategory::class, 'default_department_id');
+    }
 }

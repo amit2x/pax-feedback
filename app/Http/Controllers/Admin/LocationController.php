@@ -12,11 +12,22 @@ use App\Services\AuditLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class LocationController extends Controller
 {
     public function __construct(private AuditLogger $audit) {}
+
+    // public function index(): View
+    // {
+    //     $locations = FeedbackLocation::with(['airport', 'terminal', 'zone', 'service'])
+    //         ->orderBy('sort_order')
+    //         ->orderBy('name')
+    //         ->get();
+
+    //     return view('admin.locations.index', compact('locations'));
+    // }
 
     public function index(): View
     {
@@ -30,48 +41,92 @@ class LocationController extends Controller
         ]);
     }
 
+    public function create(): View
+    {
+        return view('admin.locations.create', $this->formData());
+    }
+
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'code' => ['required', 'string', 'max:30', 'unique:feedback_locations,code'],
-            'name' => ['required', 'string', 'max:120'],
-            'airport_id' => ['required', 'exists:feedback_airports,id'],
-            'terminal_id' => ['nullable', 'exists:feedback_terminals,id'],
-            'zone_id' => ['nullable', 'exists:feedback_zones,id'],
-            'service_id' => ['nullable', 'exists:feedback_services,id'],
-            'checkpoint_label' => ['nullable', 'string', 'max:60'],
-        ]);
+        $validated = $this->validateLocation($request);
 
-        $loc = FeedbackLocation::create([
+        $location = FeedbackLocation::create([
             'uuid' => (string) Str::uuid(),
             ...$validated,
-            'is_active' => true,
+            'is_active' => $request->boolean('is_active'),
         ]);
 
-        $this->audit->log('location.created', $loc, [], $validated);
+        $this->audit->log('location.created', $location, [], $location->toArray());
 
-        return back()->with('status', 'Location created.');
+        return redirect()->route('admin.locations.index')
+            ->with('status', 'Location created successfully.');
+    }
+
+    public function edit(FeedbackLocation $location): View
+    {
+        return view('admin.locations.edit', array_merge(
+            $this->formData(),
+            compact('location')
+        ));
     }
 
     public function update(Request $request, FeedbackLocation $location): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:120'],
-            'checkpoint_label' => ['nullable', 'string', 'max:60'],
-            'is_active' => ['boolean'],
+        $validated = $this->validateLocation($request, $location->id);
+        $old = $location->toArray();
+
+        $location->update([
+            ...$validated,
+            'is_active' => $request->boolean('is_active'),
         ]);
 
-        $location->update($validated);
-        $this->audit->log('location.updated', $location, [], $validated);
+        $this->audit->log('location.updated', $location, $old, $location->fresh()->toArray());
 
-        return back()->with('status', 'Location updated.');
+        return redirect()->route('admin.locations.index')
+            ->with('status', 'Location updated successfully.');
     }
 
     public function destroy(FeedbackLocation $location): RedirectResponse
     {
-        $this->audit->log('location.deleted', $location);
+        if ($location->qrCodes()->exists()) {
+            return back()->withErrors([
+                'location' => 'Cannot delete: this location has QR codes assigned. Disable or reassign them first.',
+            ]);
+        }
+
+        $this->audit->log('location.deleted', $location, $location->toArray(), []);
         $location->delete();
 
-        return back()->with('status', 'Location deleted.');
+        return redirect()->route('admin.locations.index')
+            ->with('status', 'Location deleted.');
+    }
+
+    private function formData(): array
+    {
+        return [
+            'airports' => FeedbackAirport::orderBy('name')->get(),
+            'terminals' => FeedbackTerminal::orderBy('sort_order')->get(),
+            'zones' => FeedbackZone::orderBy('sort_order')->get(),
+            'services' => FeedbackService::orderBy('name')->get(),
+        ];
+    }
+
+    private function validateLocation(Request $request, ?int $ignoreId = null): array
+    {
+        return $request->validate([
+            'airport_id' => ['required', 'integer', 'exists:feedback_airports,id'],
+            'terminal_id' => ['nullable', 'integer', 'exists:feedback_terminals,id'],
+            'zone_id' => ['nullable', 'integer', 'exists:feedback_zones,id'],
+            'service_id' => ['nullable', 'integer', 'exists:feedback_services,id'],
+            'code' => [
+                'required', 'string', 'max:30', 'regex:/^[A-Z0-9_-]+$/',
+                Rule::unique('feedback_locations', 'code')->ignore($ignoreId),
+            ],
+            'name' => ['required', 'string', 'max:120'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'checkpoint_label' => ['nullable', 'string', 'max:60'],
+            'sort_order' => ['nullable', 'integer', 'between:0,9999'],
+            'is_active' => ['sometimes', 'boolean'],
+        ]);
     }
 }

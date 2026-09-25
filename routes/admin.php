@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\Auth\LoginController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\QrCodeController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
-use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -73,7 +73,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // ---------- Categories ----------
         Route::middleware('permission:categories.view')->group(function () {
             Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+            Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
+            Route::get('categories/{category:uuid}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
         });
+
         Route::middleware('permission:categories.manage')->group(function () {
             Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
             Route::patch('categories/{category:uuid}', [CategoryController::class, 'update'])->name('categories.update');
@@ -81,16 +84,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         // ---------- Locations ----------
+        // ---------- Locations ----------
         Route::middleware('permission:locations.view')->group(function () {
             Route::get('locations', [LocationController::class, 'index'])->name('locations.index');
+            Route::get('locations/create', [LocationController::class, 'create'])->name('locations.create');
+            Route::get('locations/{location:uuid}/edit', [LocationController::class, 'edit'])->name('locations.edit');
         });
+
         Route::middleware('permission:locations.manage')->group(function () {
             Route::post('locations', [LocationController::class, 'store'])->name('locations.store');
             Route::patch('locations/{location:uuid}', [LocationController::class, 'update'])->name('locations.update');
             Route::delete('locations/{location:uuid}', [LocationController::class, 'destroy'])->name('locations.destroy');
         });
 
-        // ---------- QR Codes ----------
         // ---------- QR Codes ----------
         Route::middleware('permission:qr.view')->group(function () {
             Route::get('qr', [QrCodeController::class, 'index'])->name('qr.index');
@@ -117,9 +123,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         // ---------- Departments ----------
+       // ---------- Departments ----------
         Route::middleware('permission:departments.view')->group(function () {
             Route::get('departments', [DepartmentController::class, 'index'])->name('departments.index');
+            Route::get('departments/create', [DepartmentController::class, 'create'])->name('departments.create');
+            Route::get('departments/{department:uuid}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
         });
+
         Route::middleware('permission:departments.manage')->group(function () {
             Route::post('departments', [DepartmentController::class, 'store'])->name('departments.store');
             Route::patch('departments/{department:uuid}', [DepartmentController::class, 'update'])->name('departments.update');

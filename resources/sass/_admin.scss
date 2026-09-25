@@ -1,10 +1,31 @@
 @use 'variables' as v;
 
+// ============================================================
+// Body / shell
+// ============================================================
+// ============================================================
+// Admin body — beats any competing .paf-body rule from the
+// public site layout. Uses !important because both classes
+// coexist on <body> and source order can't be guaranteed.
+// ============================================================
+body.paf-admin-body,
 .paf-admin-body {
-    background: #eef2f8;
+    background: var(--adm-bg) !important;
+    color: var(--adm-text);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+// Suppress any background bleed from parent wrappers
+.paf-admin-layout,
+.paf-admin-main,
+.paf-admin-header__inner,
+.paf-admin-footer {
+    background: transparent;
 }
 
 // ============================================================
@@ -12,11 +33,16 @@
 // ============================================================
 .paf-admin-header {
     background: linear-gradient(135deg, v.$paf-primary 0%, v.$paf-primary-dark 100%);
-    color: #fff;
+    color: var(--adm-header-text);
     position: sticky;
     top: 0;
     z-index: 50;
     box-shadow: 0 2px 8px rgba(11, 61, 145, 0.18);
+}
+
+[data-theme='dark'] .paf-admin-header {
+    background: linear-gradient(135deg, #093272 0%, #051c47 100%);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
 }
 
 .paf-admin-header__inner {
@@ -34,7 +60,7 @@
     align-items: center;
     gap: 0.65rem;
     text-decoration: none;
-    color: #fff;
+    color: var(--adm-header-text);
 
     &__logo {
         width: 36px;
@@ -111,12 +137,14 @@
 }
 
 .paf-admin-sidebar {
-    background: #fff;
+    background: var(--adm-sidebar-bg);
+    border: 1px solid var(--adm-sidebar-border);
     border-radius: v.$paf-radius;
     padding: 0.75rem;
-    box-shadow: v.$paf-shadow-sm;
+    box-shadow: var(--adm-card-shadow);
     position: sticky;
     top: 76px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .paf-sidebar-nav {
@@ -131,22 +159,21 @@
     gap: 0.65rem;
     padding: 0.6rem 0.75rem;
     border-radius: 10px;
-    color: v.$paf-text-soft;
+    color: var(--adm-sidebar-link);
     font-size: 0.9rem;
     font-weight: 500;
     text-decoration: none;
-    transition: background v.$paf-duration-fast v.$paf-ease,
-        color v.$paf-duration-fast v.$paf-ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
-        background: v.$paf-accent-light;
-        color: v.$paf-primary;
+        background: var(--adm-sidebar-link-hover-bg);
+        color: var(--adm-text);
     }
 
     &.is-active {
-        background: v.$paf-primary;
-        color: #fff;
-        box-shadow: 0 4px 10px rgba(11, 61, 145, 0.22);
+        background: var(--adm-sidebar-link-active-bg);
+        color: var(--adm-sidebar-link-active-text);
+        font-weight: 600;
     }
 
     .paf-sidebar-icon {
@@ -154,15 +181,20 @@
     }
 }
 
+[data-theme='dark'] .paf-sidebar-link.is-active {
+    box-shadow: 0 4px 10px rgba(25, 118, 210, 0.25);
+}
+
 .paf-admin-main {
     min-width: 0;
+    color: var(--adm-text);
 }
 
 .paf-admin-title {
     font-size: 1.35rem;
     font-weight: 700;
     margin: 0 0 1rem;
-    color: v.$paf-text;
+    color: var(--adm-text);
 }
 
 // ============================================================
@@ -175,17 +207,18 @@
 }
 
 .paf-stat-card {
-    background: #fff;
-    border: 1px solid v.$paf-border;
+    background: var(--adm-card-bg);
+    border: 1px solid var(--adm-card-border);
     border-radius: v.$paf-radius-sm;
     padding: 1rem;
-    box-shadow: v.$paf-shadow-xs;
-    transition: transform v.$paf-duration-fast v.$paf-ease,
-        box-shadow v.$paf-duration-fast v.$paf-ease;
+    box-shadow: var(--adm-card-shadow);
+    color: var(--adm-text);
+    transition: transform 0.15s ease, box-shadow 0.15s ease,
+                background-color 0.2s ease, border-color 0.2s ease;
 
     &:hover {
         transform: translateY(-2px);
-        box-shadow: v.$paf-shadow-sm;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1);
     }
 
     &.paf-stat-card--accent {
@@ -209,11 +242,33 @@
     }
 }
 
+[data-theme='dark'] {
+    .paf-stat-card.paf-stat-card--accent {
+        background: linear-gradient(180deg, #0f2347 0%, #132d5c 100%);
+        border-color: rgba(25, 118, 210, 0.35);
+    }
+
+    .paf-stat-card.paf-stat-card--danger {
+        background: linear-gradient(180deg, #2a1215 0%, #33161a 100%);
+        border-color: rgba(248, 113, 113, 0.35);
+    }
+
+    .paf-stat-card.paf-stat-card--success {
+        background: linear-gradient(180deg, #0d2a1e 0%, #103324 100%);
+        border-color: rgba(34, 197, 94, 0.35);
+    }
+
+    .paf-stat-card.paf-stat-card--info {
+        background: linear-gradient(180deg, #0c1e33 0%, #0f2540 100%);
+        border-color: rgba(56, 189, 248, 0.35);
+    }
+}
+
 .paf-stat-label {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: v.$paf-muted;
+    color: var(--adm-text-muted);
     font-weight: 600;
     margin-bottom: 0.35rem;
 }
@@ -221,15 +276,16 @@
 .paf-stat-value {
     font-size: 1.55rem;
     font-weight: 700;
-    color: v.$paf-text;
+    color: var(--adm-text);
     line-height: 1;
 }
 
 .paf-admin-footer {
     text-align: center;
     font-size: 0.72rem;
-    color: v.$paf-muted;
+    color: var(--adm-text-muted);
     padding: 1rem;
+    border-top: 1px solid var(--adm-card-border);
 }
 
 // ============================================================
@@ -265,7 +321,7 @@
 }
 
 // ============================================================
-// Admin page title bar (with actions on the right)
+// Page header + actions
 // ============================================================
 .paf-admin-page-header {
     display: flex;
@@ -282,7 +338,7 @@
 }
 
 // ============================================================
-// Filter card
+// Filter form
 // ============================================================
 .paf-filter-form {
     display: grid;
@@ -300,7 +356,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.04em;
-            color: v.$paf-muted;
+            color: var(--adm-text-muted);
         }
     }
 
@@ -312,69 +368,120 @@
 }
 
 // ============================================================
-// DataTables theming
+// DataTables
 // ============================================================
-table.dataTable {
+table.dataTable,
+table.dataTable.table {
     font-size: 0.9rem;
+    color: var(--adm-text);
+    background: var(--adm-table-row-bg) !important;
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--adm-text);
+    --bs-table-border-color: var(--adm-table-border);
+    --bs-table-striped-bg: var(--adm-table-row-alt-bg);
+    --bs-table-hover-bg: var(--adm-table-row-hover-bg);
 
-    thead th {
-        background: #f8fafc;
-        border-bottom: 2px solid v.$paf-border !important;
-        font-weight: 600;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        color: v.$paf-muted;
-        padding: 0.65rem 0.5rem !important;
-        white-space: nowrap;
+    thead {
+        background: var(--adm-table-head-bg) !important;
+
+        th,
+        td {
+            background: var(--adm-table-head-bg) !important;
+            color: var(--adm-table-head-text) !important;
+            border-bottom: 2px solid var(--adm-table-border) !important;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.65rem 0.5rem !important;
+            white-space: nowrap;
+        }
     }
 
-    tbody td {
-        padding: 0.7rem 0.5rem !important;
-        vertical-align: middle;
-        border-color: v.$paf-border;
-    }
+    tbody {
+        tr {
+            background: var(--adm-table-row-bg) !important;
 
-    tbody tr:hover td {
-        background: #f8fafc;
+            &:nth-child(even) {
+                background: var(--adm-table-row-alt-bg) !important;
+            }
+
+            &:hover {
+                background: var(--adm-table-row-hover-bg) !important;
+            }
+        }
+
+        // Belt + braces — force every cell's background.
+        // Bootstrap applies bg on td via .table > :not(caption) > * > *;
+        // we match that scope and override.
+        > :not(caption) > * > * {
+            background-color: transparent !important;
+            color: var(--adm-text) !important;
+            box-shadow: inset 0 0 0 9999px var(--adm-table-row-bg) !important;
+            border-color: var(--adm-table-border) !important;
+        }
+
+        > :not(caption) > tr:nth-child(even) > * {
+            box-shadow: inset 0 0 0 9999px var(--adm-table-row-alt-bg) !important;
+        }
+
+        > :not(caption) > tr:hover > * {
+            box-shadow: inset 0 0 0 9999px var(--adm-table-row-hover-bg) !important;
+        }
+
+        td {
+            padding: 0.7rem 0.5rem !important;
+            vertical-align: middle;
+        }
     }
 
     code {
         font-size: 0.8rem;
-        background: v.$paf-accent-light;
-        color: v.$paf-primary;
+        background: var(--adm-sidebar-link-active-bg);
+        color: var(--adm-sidebar-link-active-text);
         padding: 0.15rem 0.4rem;
         border-radius: 4px;
     }
 }
 
 .dataTables_wrapper {
+    color: var(--adm-text);
+
     .dataTables_filter input {
+        background: var(--adm-input-bg) !important;
+        color: var(--adm-input-text) !important;
         border-radius: 8px;
-        border: 1px solid v.$paf-border;
+        border: 1px solid var(--adm-input-border) !important;
         padding: 0.4rem 0.75rem;
         font-size: 0.85rem;
         min-width: 220px;
 
+        &::placeholder {
+            color: var(--adm-input-placeholder);
+        }
+
         &:focus {
-            border-color: v.$paf-accent;
+            border-color: v.$paf-accent !important;
             box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
             outline: 0;
         }
     }
 
     .dataTables_length select {
+        background: var(--adm-input-bg) !important;
+        color: var(--adm-input-text) !important;
         border-radius: 8px;
-        border: 1px solid v.$paf-border;
+        border: 1px solid var(--adm-input-border) !important;
         padding: 0.35rem 0.5rem;
         font-size: 0.85rem;
     }
 
     .dataTables_info,
     .dataTables_length,
-    .dataTables_filter {
+    .dataTables_filter,
+    .dataTables_paginate {
         font-size: 0.82rem;
-        color: v.$paf-muted;
+        color: var(--adm-text-muted) !important;
         margin-bottom: 0.75rem;
     }
 
@@ -384,26 +491,27 @@ table.dataTable {
         .page-link {
             border-radius: 8px !important;
             margin: 0 2px;
-            border-color: v.$paf-border;
-            color: v.$paf-text-soft;
+            background: var(--adm-card-bg) !important;
+            border-color: var(--adm-card-border) !important;
+            color: var(--adm-text-soft) !important;
             font-size: 0.85rem;
             padding: 0.35rem 0.65rem;
 
             &:hover {
-                background: v.$paf-accent-light;
-                border-color: v.$paf-accent;
-                color: v.$paf-primary;
+                background: var(--adm-sidebar-link-active-bg) !important;
+                border-color: v.$paf-accent !important;
+                color: var(--adm-sidebar-link-active-text) !important;
             }
         }
 
         .page-item.active .page-link {
-            background: v.$paf-primary;
-            border-color: v.$paf-primary;
-            color: #fff;
+            background: v.$paf-primary !important;
+            border-color: v.$paf-primary !important;
+            color: #fff !important;
         }
 
         .page-item.disabled .page-link {
-            color: v.$paf-muted;
+            color: var(--adm-text-muted) !important;
             opacity: 0.5;
         }
     }
@@ -413,7 +521,7 @@ table.dataTable {
     display: inline-block;
     width: 14px;
     height: 14px;
-    border: 2px solid v.$paf-border-strong;
+    border: 2px solid var(--adm-card-border);
     border-top-color: v.$paf-primary;
     border-radius: 50%;
     animation: paf-spin 0.8s linear infinite;
@@ -426,7 +534,7 @@ table.dataTable {
 }
 
 // ============================================================
-// Badges
+// Badges — light mode
 // ============================================================
 .paf-badge {
     display: inline-flex;
@@ -456,6 +564,28 @@ table.dataTable {
     &--priority-critical { background: #fecaca; color: #991b1b; }
 }
 
+// Badges — dark mode overrides
+[data-theme='dark'] {
+    .paf-badge {
+        &--compliment { background: rgba(34, 197, 94, 0.18); color: #6ee7a4; }
+        &--suggestion { background: rgba(59, 130, 246, 0.18); color: #93c5fd; }
+        &--complaint  { background: rgba(248, 113, 113, 0.18); color: #fca5a5; }
+        &--query      { background: rgba(250, 204, 21, 0.18); color: #fde68a; }
+
+        &--status-submitted    { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+        &--status-acknowledged { background: rgba(129, 140, 248, 0.2); color: #c7d2fe; }
+        &--status-assigned     { background: rgba(96, 165, 250, 0.2);  color: #bfdbfe; }
+        &--status-in_progress  { background: rgba(251, 191, 36, 0.2);  color: #fde68a; }
+        &--status-resolved     { background: rgba(52, 211, 153, 0.2);  color: #a7f3d0; }
+        &--status-closed       { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+
+        &--priority-low      { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+        &--priority-medium   { background: rgba(96, 165, 250, 0.2);  color: #bfdbfe; }
+        &--priority-high     { background: rgba(251, 146, 60, 0.2);  color: #fed7aa; }
+        &--priority-critical { background: rgba(248, 113, 113, 0.2); color: #fca5a5; }
+    }
+}
+
 // ============================================================
 // Rating pill
 // ============================================================
@@ -466,12 +596,20 @@ table.dataTable {
     font-size: 0.78rem;
     font-weight: 600;
     border-radius: 8px;
-    background: #f1f5f9;
-    color: v.$paf-text;
+    background: var(--adm-table-head-bg);
+    color: var(--adm-text);
 
     &.is-low    { background: #fef2f2; color: #b91c1c; }
     &.is-mid    { background: #fef9c3; color: #92400e; }
     &.is-high   { background: #ecfdf5; color: #047857; }
+}
+
+[data-theme='dark'] {
+    .paf-rating-pill {
+        &.is-low  { background: rgba(248, 113, 113, 0.18); color: #fca5a5; }
+        &.is-mid  { background: rgba(250, 204, 21, 0.18);  color: #fde68a; }
+        &.is-high { background: rgba(34, 197, 94, 0.18);   color: #6ee7a4; }
+    }
 }
 
 // ============================================================
@@ -493,32 +631,32 @@ table.dataTable {
         font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: v.$paf-muted;
+        color: var(--adm-text-muted);
         font-weight: 600;
     }
 
     .paf-detail-value {
         font-size: 0.95rem;
         font-weight: 500;
-        color: v.$paf-text;
+        color: var(--adm-text);
         word-break: break-word;
     }
 }
 
 .paf-comment-block {
-    background: #fbfcfe;
-    border: 1px solid v.$paf-border;
+    background: var(--adm-table-row-alt-bg);
+    border: 1px solid var(--adm-card-border);
     border-radius: v.$paf-radius-sm;
     padding: 1rem;
     font-size: 0.95rem;
     line-height: 1.55;
-    color: v.$paf-text-soft;
+    color: var(--adm-text-soft);
     white-space: pre-wrap;
     word-break: break-word;
 }
 
 // ============================================================
-// Attachments gallery
+// Attachment gallery
 // ============================================================
 .paf-attachment-grid {
     display: grid;
@@ -527,8 +665,8 @@ table.dataTable {
 }
 
 .paf-attachment-card {
-    background: #fff;
-    border: 1px solid v.$paf-border;
+    background: var(--adm-card-bg);
+    border: 1px solid var(--adm-card-border);
     border-radius: v.$paf-radius-sm;
     overflow: hidden;
     display: flex;
@@ -539,6 +677,7 @@ table.dataTable {
         aspect-ratio: 1;
         object-fit: cover;
         display: block;
+        background: var(--adm-table-head-bg);
     }
 
     .paf-attachment-meta {
@@ -552,17 +691,17 @@ table.dataTable {
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.04em;
-            color: v.$paf-muted;
+            color: var(--adm-text-muted);
         }
 
         .paf-attachment-size {
-            color: v.$paf-muted;
+            color: var(--adm-text-muted);
         }
 
         .paf-attachment-action {
             margin-top: 0.35rem;
             font-size: 0.75rem;
-            color: v.$paf-primary;
+            color: v.$paf-accent;
             text-decoration: none;
             font-weight: 600;
 
@@ -572,7 +711,7 @@ table.dataTable {
 }
 
 // ============================================================
-// Timeline (status history)
+// Timeline
 // ============================================================
 .paf-timeline {
     display: flex;
@@ -588,7 +727,7 @@ table.dataTable {
         top: 0.5rem;
         bottom: 0.5rem;
         width: 2px;
-        background: v.$paf-border;
+        background: var(--adm-card-border);
     }
 }
 
@@ -605,18 +744,18 @@ table.dataTable {
         height: 10px;
         background: v.$paf-primary;
         border-radius: 50%;
-        border: 2px solid #fff;
-        box-shadow: 0 0 0 2px v.$paf-border;
+        border: 2px solid var(--adm-card-bg);
+        box-shadow: 0 0 0 2px var(--adm-card-border);
     }
 
     .paf-timeline-time {
         font-size: 0.72rem;
-        color: v.$paf-muted;
+        color: var(--adm-text-muted);
         margin-bottom: 0.1rem;
     }
 
     .paf-timeline-body {
-        color: v.$paf-text-soft;
+        color: var(--adm-text-soft);
     }
 }
 
@@ -626,12 +765,228 @@ table.dataTable {
 .paf-empty {
     text-align: center;
     padding: 2.5rem 1rem;
-    color: v.$paf-muted;
+    color: var(--adm-text-muted);
 
     .paf-empty-icon {
         font-size: 2.5rem;
         display: block;
         margin-bottom: 0.5rem;
         opacity: 0.6;
+    }
+}
+
+// ============================================================
+// Theme toggle button (already using theme variable — OK)
+// ============================================================
+.paf-theme-toggle {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--adm-header-text, #ffffff);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    padding: 0;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.16);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    &:focus-visible {
+        outline: 3px solid rgba(255, 255, 255, 0.35);
+        outline-offset: 2px;
+    }
+
+    svg {
+        width: 18px;
+        height: 18px;
+        display: block;
+    }
+
+    .paf-theme-icon--moon { display: block; }
+    .paf-theme-icon--sun  { display: none; }
+}
+
+[data-theme='dark'] .paf-theme-toggle {
+    .paf-theme-icon--moon { display: none; }
+    .paf-theme-icon--sun  { display: block; }
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme]) .paf-theme-toggle {
+        .paf-theme-icon--moon { display: none; }
+        .paf-theme-icon--sun  { display: block; }
+    }
+}
+
+
+// ============================================================
+// UNIVERSAL TABLE THEMING
+// Covers every <table> inside admin content:
+//   - plain <table>
+//   - <table class="table">
+//   - <table class="admin-table">
+//   - <table class="dataTable">
+//   - Bootstrap .table-striped, .table-hover variants
+// Uses box-shadow inset trick to beat Bootstrap's --bs-table-bg.
+// ============================================================
+
+.paf-admin-main table,
+.paf-admin-main .table,
+table.admin-table {
+    width: 100%;
+    font-size: 0.9rem;
+    color: var(--adm-text);
+    background: var(--adm-table-row-bg);
+    border-collapse: separate;
+    border-spacing: 0;
+
+    // Bootstrap 5 table variable overrides (scoped to these tables)
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--adm-text);
+    --bs-table-border-color: var(--adm-table-border);
+    --bs-table-striped-bg: var(--adm-table-row-alt-bg);
+    --bs-table-striped-color: var(--adm-text);
+    --bs-table-hover-bg: var(--adm-table-row-hover-bg);
+    --bs-table-hover-color: var(--adm-text);
+
+    // ---------- HEADER ----------
+    > thead {
+        background: var(--adm-table-head-bg);
+
+        > tr > th,
+        > tr > td {
+            background: var(--adm-table-head-bg) !important;
+            color: var(--adm-table-head-text) !important;
+            border-bottom: 2px solid var(--adm-table-border) !important;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.65rem 0.6rem;
+            text-align: left;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+    }
+
+    // ---------- BODY ----------
+    > tbody {
+        > tr {
+            // Base row color
+            > td,
+            > th {
+                background-color: var(--adm-table-row-bg) !important;
+                color: var(--adm-text) !important;
+                border-bottom: 1px solid var(--adm-table-border) !important;
+                padding: 0.7rem 0.6rem;
+                vertical-align: middle;
+                // Belt-and-braces: paint row color with inset shadow
+                // so Bootstrap's background-color rules can't override
+                box-shadow: inset 0 0 0 9999px var(--adm-table-row-bg);
+            }
+
+            // Zebra striping — automatic, works without .table-striped
+            &:nth-child(even) > td,
+            &:nth-child(even) > th {
+                box-shadow: inset 0 0 0 9999px var(--adm-table-row-alt-bg);
+            }
+
+            // Hover state — beats both stripe and base
+            &:hover > td,
+            &:hover > th {
+                box-shadow: inset 0 0 0 9999px var(--adm-table-row-hover-bg);
+            }
+        }
+
+        // Remove shadow from any cell that wants its own background (e.g. badges span the td but not the cell bg)
+        > tr > td > *,
+        > tr > th > * {
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    // ---------- CODE ----------
+    code {
+        font-size: 0.8rem;
+        background: var(--adm-sidebar-link-active-bg);
+        color: var(--adm-sidebar-link-active-text);
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+    }
+
+    // ---------- EMPTY STATE ----------
+    > tbody > tr > td[colspan] {
+        text-align: center;
+        color: var(--adm-text-muted);
+        padding: 2rem 1rem;
+    }
+}
+
+// ============================================================
+// Special-case: .admin-table wrapper table
+// (Categories, Locations, Departments)
+// Uses transparent borders by default — we want them visible.
+// ============================================================
+.admin-card table.admin-table {
+    // Card provides the border-radius + border;
+    // table itself should be flush.
+    border-radius: 0;
+
+    > thead > tr > th:first-child { padding-left: 1.25rem; }
+    > thead > tr > th:last-child  { padding-right: 1.25rem; }
+
+    > tbody > tr > td:first-child { padding-left: 1.25rem; }
+    > tbody > tr > td:last-child  { padding-right: 1.25rem; }
+
+    > tbody > tr:last-child > td  { border-bottom: 0 !important; }
+}
+
+
+// ============================================================
+// Override shared .paf-card inside the admin panel only.
+// The public site uses the same class with a fixed light theme.
+// Scoping to .paf-admin-main ensures zero leakage.
+// ============================================================
+.paf-admin-main .paf-card,
+.paf-admin-main .paf-card--accent {
+    background: var(--adm-card-bg) !important;
+    border: 1px solid var(--adm-card-border) !important;
+    box-shadow: var(--adm-card-shadow) !important;
+    color: var(--adm-text);
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+// Any heading, paragraph, or link inside admin cards must flip too
+.paf-admin-main .paf-card {
+    .paf-step-title,
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--adm-text) !important;
+    }
+
+    .paf-step-hint,
+    p,
+    small {
+        color: var(--adm-text-muted);
+    }
+
+    a:not([class*='btn']) {
+        color: v.$paf-accent;
+    }
+
+    hr,
+    .admin-divider {
+        border-color: var(--adm-card-border);
+        background-color: var(--adm-card-border);
     }
 }

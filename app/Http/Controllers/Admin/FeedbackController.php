@@ -115,7 +115,7 @@ class FeedbackController extends Controller
                                     .e(str_replace('_', ' ', ucfirst($fb->status))).'</span>',
                 'priority' => '<span class="paf-badge paf-badge--priority-'.e($fb->priority).'">'
                                     .e(ucfirst($fb->priority)).'</span>',
-                'action' => '<a href="'.route('admin.feedback.show', $fb->uuid).'" class="btn btn-sm paf-btn-outline">View</a>',
+                'action' => '<a href="'.route('admin.feedback.show', $fb->uuid).'" class="btn btn-sm paf-btn-primary">View</a>',
             ];
         });
 

@@ -2,6 +2,7 @@
 
 return [
     'app_name' => 'Passenger Feedback',
+    'company_name' => 'Netaji Subhash Chandra Bose International Airport, Airports Authority of India',
     'tagline' => 'Help us improve your airport experience.',
     'takes_less_than_a_minute' => 'Takes less than 1 minute',
     'language' => 'Language',
@@ -60,7 +61,7 @@ return [
     'hero_aria' => 'Passenger welcome illustration',
     'hero_alt' => 'Airport staff welcoming passengers with a traditional namaste',
     'hero_badge' => 'Passenger Feedback',
-    'hero_eyebrow' => 'Welcome to Kolkata Airport',
+    'hero_eyebrow' => 'Welcome to NSCBI Airport, Kolkata',
     'hero_title' => 'Your voice shapes our airport',
     'hero_subtitle' => 'Share your experience in under a minute — completely anonymous.',
 
@@ -72,4 +73,9 @@ return [
 
     'voice_added' => 'Voice recorded',
     'photos_added' => ':count photo added',
+
+    'visit_airport_website' => 'Visit the official website.',
+    'success_aria' => 'Feedback submitted successfully',
+    'thank_you_hint' => 'Please keep this reference number for your records.',
+    'submit_another' => 'Submit another feedback',
 ];

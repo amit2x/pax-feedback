@@ -111,12 +111,12 @@
     <footer class="paf-footer" role="contentinfo">
         <div>
             &copy; {{ date('Y') }}
-            <a href="https://www.aai.aero" target="_blank" rel="noopener noreferrer">
-                Airports Authority of India
+            <a href="https://kolkatabeta.aai.aero/" target="_blank" rel="noopener noreferrer">
+                {{ __('messages.company_name') }}
             </a>
         </div>
 
-        <div class="paf-trust-line">
+        <div class="paf-trust-line d-none">
             <svg viewBox="0 0 24 24" fill="#16A34A" aria-hidden="true">
                 <path
                     d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />

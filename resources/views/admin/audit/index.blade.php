@@ -70,8 +70,9 @@
     </div>
 
     <div class="mt-3">
-        {{ $logs->links() }}
+        {{ $logs->appends(request()->query())->links('pagination::bootstrap-5') }}
     </div>
+
     @endif
 </div>
 @endsection

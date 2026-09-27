@@ -8,8 +8,10 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\QrCodeController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -166,6 +168,32 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // ---------- Users ----------
         Route::middleware('permission:users.manage')->group(function () {
             Route::resource('users', UserController::class)->except(['show']);
+        });
+
+        // ---------- Roles ----------
+        Route::middleware('permission:roles.view')->group(function () {
+            Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
+            Route::get('roles/create', [RoleController::class, 'create'])->name('roles.create');
+            Route::get('roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+        });
+
+        Route::middleware('permission:roles.manage')->group(function () {
+            Route::post('roles', [RoleController::class, 'store'])->name('roles.store');
+            Route::patch('roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+            Route::delete('roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+        });
+
+        // ---------- Permissions ----------
+        Route::middleware('permission:roles.view')->group(function () {
+            Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
+            Route::get('permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
+            Route::get('permissions/{permission}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
+        });
+
+        Route::middleware('permission:roles.manage')->group(function () {
+            Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
+            Route::patch('permissions/{permission}', [PermissionController::class, 'update'])->name('permissions.update');
+            Route::delete('permissions/{permission}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
         });
     });
 });

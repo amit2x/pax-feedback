@@ -2,6 +2,8 @@ import 'bootstrap';
 import DataTable from 'datatables.net-bs5';
 import axios from 'axios';
 import ThemeToggle from './modules/theme-toggle.js';
+import PermissionGroups from './modules/permission-groups.js';
+import PermissionForm from './modules/permission-form.js';
 
 window.axios = axios;
 
@@ -42,7 +44,7 @@ function initFeedbackTable() {
             { data: 'location_name', name: 'location_name', orderable: false, searchable: false },
             { data: 'status', name: 'status' },
             { data: 'priority', name: 'priority' },
-            { data: 'action', name: 'action', orderable: false, searchable: false             },
+            { data: 'action', name: 'action', orderable: false, searchable: false },
         ],
         order: [[1, 'desc']],
         pageLength: 25,
@@ -131,6 +133,8 @@ function initInlineToggles() {
 
 document.addEventListener('DOMContentLoaded', () => {
     new ThemeToggle();
+    new PermissionGroups();
+    new PermissionForm();
     initFeedbackTable();
     initFeedbackFilters();
     initConfirmForms();

@@ -76,4 +76,19 @@
         <span>Users</span>
     </a>
     @endcan
+
+    @can('roles.manage')
+    <a href="{{ route('admin.roles.index') }}"
+        class="paf-sidebar-link {{ request()->routeIs('admin.roles.*') ? 'is-active' : '' }}">
+        <span class="paf-sidebar-icon">🏷️</span>
+        <span>Roles</span>
+    </a>
+    @endcan
+    @can('roles.view')
+    <a href="{{ route('admin.permissions.index') }}"
+        class="paf-sidebar-link {{ request()->routeIs('admin.permissions.*') ? 'is-active' : '' }}">
+        <span class="paf-sidebar-icon">🔑</span>
+        <span>Permissions</span>
+    </a>
+    @endcan
 </nav>

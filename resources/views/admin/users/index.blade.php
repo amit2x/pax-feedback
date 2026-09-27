@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
+                {{-- @foreach ($users as $user)
                 <tr>
                     <td class="fw-semibold">{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
@@ -48,7 +48,48 @@
                         </div>
                     </td>
                 </tr>
-                @endforeach
+                @endforeach --}}
+
+                @forelse ($users as $user)
+                <tr>
+                    <td>
+                        <strong>{{ $user->name }}</strong>
+                        @if ($user->id === auth()->id())
+                        <span style="font-size:0.7rem; color:var(--adm-text-muted);">(you)</span>
+                        @endif
+                    </td>
+                    <td>{{ $user->email }}</td>
+                    <td>
+                        @forelse ($user->roles as $role)
+                        <span class="admin-badge admin-badge--suggestion">{{ $role->name }}</span>
+                        @empty
+                        <span style="color:var(--adm-text-muted);">—</span>
+                        @endforelse
+                    </td>
+                    <td style="font-size:0.82rem; color:var(--adm-text-muted);">
+                        {{ $user->created_at?->format('d M Y') }}
+                    </td>
+                    <td style="text-align:right; white-space:nowrap;">
+                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm paf-btn-primary">
+                            Edit</a>
+
+                        @if ($user->id !== auth()->id())
+                        <form method="POST" action="{{ route('admin.users.destroy', $user) }}" class="d-inline"
+                            onsubmit="return confirm('Delete this user?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                        @endif
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:2rem; color:var(--adm-text-muted);">
+                        No users yet.
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

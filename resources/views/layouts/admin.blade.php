@@ -1,10 +1,9 @@
 @php
-    $themeCookie = request()->cookie('paf_admin_theme');
-    $themeAttr = in_array($themeCookie, ['light', 'dark'], true) ? $themeCookie : null;
+$themeCookie = request()->cookie('paf_admin_theme');
+$themeAttr = in_array($themeCookie, ['light', 'dark'], true) ? $themeCookie : null;
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
-    @if ($themeAttr) data-theme="{{ $themeAttr }}" @endif>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @if ($themeAttr) data-theme="{{ $themeAttr }}" @endif>
 
 <head>
     <meta charset="utf-8">
@@ -34,8 +33,8 @@
             </a>
 
             <div class="paf-admin-user">
-                <button type="button" class="paf-theme-toggle" data-theme-toggle
-                    aria-label="Toggle light and dark mode" aria-pressed="false">
+                <button type="button" class="paf-theme-toggle" data-theme-toggle aria-label="Toggle light and dark mode"
+                    aria-pressed="false">
                     <svg class="paf-theme-icon paf-theme-icon--moon" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         aria-hidden="true">
@@ -66,9 +65,34 @@
         </aside>
 
         <main class="paf-admin-main" role="main">
+            {{-- Success Alert --}}
             @if (session('status'))
-                <div class="alert alert-success">{{ session('status') }}</div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('status') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             @endif
+
+            {{-- Error Alert --}}
+            @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+
+            {{-- Validation Errors Array (Optional but recommended for form failures) --}}
+            @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+
 
             @yield('content')
         </main>

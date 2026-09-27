@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\FeedbackCategory;
 use App\Models\FeedbackDepartment;
 use App\Services\AuditLogger;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class CategoryController extends Controller
@@ -18,13 +21,19 @@ class CategoryController extends Controller
 
     public function index(): View
     {
-        $categories = FeedbackCategory::with('defaultDepartment')
-            ->withCount('subcategories')
+        $departments = FeedbackDepartment::orderBy('name')->get();
+        $query = FeedbackCategory::with(['defaultDepartment', 'subcategories'])
             ->orderBy('sort_order')
-            ->orderBy('name_en')
-            ->get();
+            ->orderBy('name_en');
 
-        return view('admin.categories.index', compact('categories'));
+        $departmentFilter = request()->query('department_id');
+        if ($departmentFilter && is_numeric($departmentFilter)) {
+            $query->where('default_department_id', (int) $departmentFilter);
+        }
+
+        $categories = $query->get();
+
+        return view('admin.categories.index', compact('categories', 'departments', 'departmentFilter'));
     }
 
     // public function index(): View
@@ -40,35 +49,70 @@ class CategoryController extends Controller
     public function create(): View
     {
         $departments = FeedbackDepartment::orderBy('name')->get();
+
         return view('admin.categories.create', compact('departments'));
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $this->validateCategory($request);
+        // 1. Log the incoming request payload to see what data arrived
+        Log::info('Category store attempt started.', ['request_data' => $request->all()]);
 
-        $category = FeedbackCategory::create([
-            'uuid' => (string) Str::uuid(),
-            'code' => $validated['code'],
-            'name_en' => $validated['name_en'],
-            'name_hi' => $validated['name_hi'] ?? null,
-            'name_bn' => $validated['name_bn'] ?? null,
-            'icon' => $validated['icon'] ?? null,
-            'default_department_id' => $validated['default_department_id'] ?? null,
-            'sort_order' => $validated['sort_order'] ?? 0,
-            'is_active' => $request->boolean('is_active'),
-        ]);
+        try {
+            // 2. Validate data and catch if it fails here
+            $validated = $this->validateCategory($request);
+            Log::info('Validation passed successfully.', ['validated_data' => $validated]);
 
-        $this->audit->log('category.created', $category, [], $category->toArray());
+            // 3. Attempt database creation
+            $category = FeedbackCategory::create([
+                'uuid' => (string) Str::uuid(),
+                'code' => $validated['code'],
+                'name_en' => $validated['name_en'],
+                'name_hi' => $validated['name_hi'] ?? null,
+                'name_bn' => $validated['name_bn'] ?? null,
+                'icon' => $validated['icon'] ?? null,
+                'default_department_id' => $validated['default_department_id'] ?? null,
+                'sort_order' => $validated['sort_order'] ?? 0,
+                'is_active' => $request->boolean('is_active'),
+            ]);
 
-        return redirect()
-            ->route('admin.categories.index')
-            ->with('status', 'Category created successfully.');
+            Log::info('Category model created in memory/DB.', ['category_id' => $category->id ?? 'N/A']);
+
+            // 4. Audit logging
+            $this->audit->log('category.created', $category, [], $category->toArray());
+            Log::info('Audit log saved.');
+
+            return redirect()
+                ->route('admin.categories.index')
+                ->with('status', 'Category created successfully.');
+
+        } catch (ValidationException $e) {
+            // Captures validation failures (Laravel usually hides this by redirecting back automatically)
+            Log::error('Validation failed!', [
+                'errors' => $e->errors(),
+                'inputs' => $request->all(),
+            ]);
+
+            // Re-throw so it redirects back with errors now that we logged it
+            throw $e;
+        } catch (Exception $e) {
+            // Captures database issues, mass assignment errors, or system crashes
+            Log::error('Category creation failed critically!', [
+                'error_message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to create category: '.$e->getMessage());
+        }
     }
 
     public function edit(FeedbackCategory $category): View
     {
         $departments = FeedbackDepartment::orderBy('name')->get();
+
         return view('admin.categories.edit', compact('category', 'departments'));
     }
 

@@ -38,4 +38,14 @@ class FeedbackSubcategory extends Model
     {
         return $q->where('is_active', true)->orderBy('sort_order');
     }
+
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
+
+    public function defaultDepartment()
+    {
+        return $this->belongsTo(FeedbackDepartment::class, 'default_department_id');
+    }
 }

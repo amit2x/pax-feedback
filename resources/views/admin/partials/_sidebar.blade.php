@@ -21,6 +21,14 @@
     </a>
     @endcan
 
+    @can('subcategories.view')
+    <a href="{{ route('admin.subcategories.index') }}"
+        class="paf-sidebar-link {{ request()->routeIs('admin.subcategories.*') ? 'is-active' : '' }}">
+        <span class="paf-sidebar-icon">🏷️</span>
+        <span>Subcategories</span>
+    </a>
+    @endcan
+
     @can('locations.view')
     <a href="{{ route('admin.locations.index') }}"
         class="paf-sidebar-link {{ request()->routeIs('admin.locations.*') ? 'is-active' : '' }}">

@@ -1,5 +1,4 @@
 <?php
-use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\Auth\LoginController;
@@ -11,7 +10,9 @@ use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\QrCodeController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -83,6 +84,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('categories/{category:uuid}', [CategoryController::class, 'destroy'])->name('categories.destroy');
         });
 
+        // ---------- Subcategories ----------
+        Route::middleware('permission:categories.view')->group(function () {
+            Route::get('subcategories', [SubcategoryController::class, 'index'])->name('subcategories.index');
+            Route::get('subcategories/create', [SubcategoryController::class, 'create'])->name('subcategories.create');
+            Route::get('subcategories/{subcategory:uuid}/edit', [SubcategoryController::class, 'edit'])->name('subcategories.edit');
+        });
+
+        Route::middleware('permission:categories.manage')->group(function () {
+            Route::post('subcategories', [SubcategoryController::class, 'store'])->name('subcategories.store');
+            Route::patch('subcategories/{subcategory:uuid}', [SubcategoryController::class, 'update'])->name('subcategories.update');
+            Route::delete('subcategories/{subcategory:uuid}', [SubcategoryController::class, 'destroy'])->name('subcategories.destroy');
+        });
+
         // ---------- Locations ----------
         // ---------- Locations ----------
         Route::middleware('permission:locations.view')->group(function () {
@@ -123,7 +137,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         // ---------- Departments ----------
-       // ---------- Departments ----------
+        // ---------- Departments ----------
         Route::middleware('permission:departments.view')->group(function () {
             Route::get('departments', [DepartmentController::class, 'index'])->name('departments.index');
             Route::get('departments/create', [DepartmentController::class, 'create'])->name('departments.create');

@@ -79,6 +79,55 @@ class QrImageService
     /**
      * Render QR code.
      */
+    // private function renderQrPng(
+    //     string $payload,
+    //     int $size
+    // ): string {
+    //     if (! extension_loaded('gd')) {
+    //         throw new RuntimeException(
+    //             'GD extension is required for QR code generation.'
+    //         );
+    //     }
+
+    //     /*
+    //      * Keep a proper QR quiet zone.
+    //      */
+    //     $margin = max(
+    //         12,
+    //         (int) round($size * 0.025)
+    //     );
+
+    //     $renderer = new GDLibRenderer(
+    //         $size,
+    //         $margin,
+    //         'png',
+    //         9,
+    //         Fill::uniformColor(
+    //             new Rgb(255, 255, 255),
+    //             new Rgb(15, 23, 42)
+    //         )
+    //     );
+
+    //     /*
+    //      * IMPORTANT:
+    //      *
+    //      * The default Writer error correction is LOW (L).
+    //      *
+    //      * Because we are placing a logo over the QR,
+    //      * explicitly use HIGH error correction.
+    //      */
+    //     $writer = new Writer($renderer);
+
+    //     return $writer->writeString(
+    //         $payload,
+    //         'UTF-8',
+    //         ErrorCorrectionLevel::H()
+    //     );
+    // }
+
+        /**
+     * Render QR code filling up full image bounds.
+     */
     private function renderQrPng(
         string $payload,
         int $size
@@ -90,12 +139,15 @@ class QrImageService
         }
 
         /*
-         * Keep a proper QR quiet zone.
+         * ---------------------------------------------------------
+         * FORCE FULL SIZE MATRIX (Remove Outside Margins)
+         * ---------------------------------------------------------
+         *
+         * Setting this margin to 1 or 2 instead of calculating
+         * a percentage forces the QR code grid to expand to
+         * the full dimensions of your $size boundary.
          */
-        $margin = max(
-            12,
-            (int) round($size * 0.025)
-        );
+        $margin = 1;
 
         $renderer = new GDLibRenderer(
             $size,
@@ -125,8 +177,131 @@ class QrImageService
         );
     }
 
+
     /**
      * Composite logo into the QR.
+     */
+    // private function compositeLogo(
+    //     string $qrBinary,
+    //     string $logoPath,
+    //     int $size
+    // ): string {
+    //     $manager = $this->imageManager();
+
+    //     /*
+    //      * Read QR.
+    //      */
+    //     $qr = $manager->read($qrBinary);
+
+    //     /*
+    //      * Read logo.
+    //      */
+    //     $logo = $manager->read($logoPath);
+
+    //     /*
+    //      * ---------------------------------------------------------
+    //      * REMOVE EXCESS WHITE SPACE
+    //      * ---------------------------------------------------------
+    //      *
+    //      * Your source AAI logo contains a large white canvas.
+    //      * Trim it before calculating the logo size.
+    //      */
+    //     $logo->trim(15);
+
+    //     if ($logo->width() <= 0 || $logo->height() <= 0) {
+    //         throw new RuntimeException(
+    //             'Invalid logo dimensions after trimming.'
+    //         );
+    //     }
+
+    //     /*
+    //      * ---------------------------------------------------------
+    //      * LOGO SIZE
+    //      * ---------------------------------------------------------
+    //      *
+    //      * Keep actual logo around 10% of QR.
+    //      *
+    //      * This is intentionally smaller than the previous 13%.
+    //      *
+    //      * 800px  -> 80px
+    //      * 1600px -> 160px
+    //      * 2400px -> 240px
+    //      */
+    //     $logoSize = (int) round($size * 0.10);
+
+    //     $logoSize = max(64, $logoSize);
+    //     $logoSize = min(240, $logoSize);
+
+    //     /*
+    //      * Preserve aspect ratio.
+    //      */
+    //     $logo->scale(
+    //         width: $logoSize,
+    //         height: $logoSize
+    //     );
+
+    //     /*
+    //      * ---------------------------------------------------------
+    //      * WHITE PLATE
+    //      * ---------------------------------------------------------
+    //      *
+    //      * Only slightly larger than logo.
+    //      *
+    //      * Logo = approximately 10%
+    //      * Plate = approximately 12%
+    //      *
+    //      * Do NOT use a huge white plate.
+    //      */
+    //     $plateSize = (int) round($size * 0.12);
+
+    //     $plateSize = max(
+    //         $logoSize + 10,
+    //         $plateSize
+    //     );
+
+    //     $plateSize = min(
+    //         280,
+    //         $plateSize
+    //     );
+
+    //     /*
+    //      * Create white center plate.
+    //      */
+    //     $plate = $manager
+    //         ->create(
+    //             $plateSize,
+    //             $plateSize
+    //         )
+    //         ->fill('#ffffff');
+
+    //     /*
+    //      * ---------------------------------------------------------
+    //      * CENTER PLATE
+    //      * ---------------------------------------------------------
+    //      */
+    //     $qr->place(
+    //         $plate,
+    //         'center'
+    //     );
+
+    //     /*
+    //      * ---------------------------------------------------------
+    //      * CENTER LOGO
+    //      * ---------------------------------------------------------
+    //      */
+    //     $qr->place(
+    //         $logo,
+    //         'center'
+    //     );
+
+    //     /*
+    //      * Return final PNG.
+    //      */
+    //     return (string) $qr->toPng();
+    // }
+
+        /**
+     * Composite logo into the QR with premium sharpness retention.
      */
     private function compositeLogo(
         string $qrBinary,
@@ -136,24 +311,24 @@ class QrImageService
         $manager = $this->imageManager();
 
         /*
-         * Read QR.
+         * Read QR code.
          */
         $qr = $manager->read($qrBinary);
 
         /*
-         * Read logo.
+         * Read source logo.
          */
         $logo = $manager->read($logoPath);
 
         /*
          * ---------------------------------------------------------
-         * REMOVE EXCESS WHITE SPACE
+         * GENTLE TRIM AND DIMENSION SANITY
          * ---------------------------------------------------------
-         *
-         * Your source AAI logo contains a large white canvas.
-         * Trim it before calculating the logo size.
+         * Trim the excess whitespace out gently. If your logo remains fuzzy,
+         * it's highly recommended to use a pre-cropped transparent PNG source logo
+         * instead of using dynamic execution trims here.
          */
-        $logo->trim(15);
+        $logo->trim(5);
 
         if ($logo->width() <= 0 || $logo->height() <= 0) {
             throw new RuntimeException(
@@ -163,24 +338,18 @@ class QrImageService
 
         /*
          * ---------------------------------------------------------
-         * LOGO SIZE
+         * OPTIMIZED LOGO RATIO FOR SMALL DETAIL RETENTION
          * ---------------------------------------------------------
-         *
-         * Keep actual logo around 10% of QR.
-         *
-         * This is intentionally smaller than the previous 13%.
-         *
-         * 800px  -> 80px
-         * 1600px -> 160px
-         * 2400px -> 240px
+         * A 10% ratio makes text-heavy logos unreadable.
+         * We increase this safely to 16% (Error Correction Level H can handle up to 30%).
+         * We also increase the minimum bounds so details don't compress away.
          */
-        $logoSize = (int) round($size * 0.10);
-
-        $logoSize = max(64, $logoSize);
-        $logoSize = min(240, $logoSize);
+        $logoSize = (int) round($size * 0.16);
+        $logoSize = max(140, $logoSize); // Never allow it to compress below 140px
+        $logoSize = min(380, $logoSize);
 
         /*
-         * Preserve aspect ratio.
+         * Resize the logo cleanly using explicit dimensions while keeping aspect ratio.
          */
         $logo->scale(
             width: $logoSize,
@@ -189,63 +358,33 @@ class QrImageService
 
         /*
          * ---------------------------------------------------------
-         * WHITE PLATE
+         * WHITE PLATE OVERLAY CALCULATIONS
          * ---------------------------------------------------------
-         *
-         * Only slightly larger than logo.
-         *
-         * Logo = approximately 10%
-         * Plate = approximately 12%
-         *
-         * Do NOT use a huge white plate.
+         * We add a tight 1px white boundary edge padding around the logo vector.
          */
-        $plateSize = (int) round($size * 0.12);
-
-        $plateSize = max(
-            $logoSize + 10,
-            $plateSize
-        );
-
-        $plateSize = min(
-            280,
-            $plateSize
-        );
+        $plateSize = $logoSize + 2;
 
         /*
          * Create white center plate.
          */
         $plate = $manager
-            ->create(
-                $plateSize,
-                $plateSize
-            )
+            ->create($plateSize, $plateSize)
             ->fill('#ffffff');
 
         /*
          * ---------------------------------------------------------
-         * CENTER PLATE
+         * MERGE LAYER COMPOSITION
          * ---------------------------------------------------------
          */
-        $qr->place(
-            $plate,
-            'center'
-        );
+        $qr->place($plate, 'center');
+        $qr->place($logo, 'center');
 
         /*
-         * ---------------------------------------------------------
-         * CENTER LOGO
-         * ---------------------------------------------------------
-         */
-        $qr->place(
-            $logo,
-            'center'
-        );
-
-        /*
-         * Return final PNG.
+         * Return sharp final PNG.
          */
         return (string) $qr->toPng();
     }
+
 
     /**
      * Image manager.

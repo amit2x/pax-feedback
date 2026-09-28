@@ -13,61 +13,27 @@ class SecurityHeaders
      */
     public function handle(Request $request, Closure $next): Response
     {
-        /** @var Response $response */
         $response = $next($request);
 
         /*
         |--------------------------------------------------------------------------
-        | Content Security Policy (CSP)
+        | Content Security Policy
         |--------------------------------------------------------------------------
-        |
-        | Restricts the sources from which browsers may load resources.
-        |
-        | NOTE:
-        | 'unsafe-inline' is currently allowed ONLY for styles because
-        | Bootstrap/plugins may require inline style attributes.
-        |
-        | JavaScript intentionally does NOT allow 'unsafe-inline'.
-        |
         */
 
         $csp = implode('; ', [
             "default-src 'self'",
-
-            // JavaScript must come from this application.
             "script-src 'self'",
-
-            // Bootstrap/plugins may require inline CSS.
             "style-src 'self' 'unsafe-inline' https://fonts.bunny.net",
-
-            // Application + Bunny Fonts.
             "font-src 'self' data: https://fonts.bunny.net",
-
-            // Local images, inline images and generated blobs.
             "img-src 'self' data: blob:",
-
-            // AJAX / Fetch / XHR connections.
             "connect-src 'self'",
-
-            // Audio/video/blob resources.
             "media-src 'self' blob:",
-
-            // Prevent legacy plugin content.
             "object-src 'none'",
-
-            // Prevent manipulation of the document base URL.
             "base-uri 'self'",
-
-            // Forms may submit only to this application.
             "form-action 'self'",
-
-            // Completely prevent iframe embedding.
             "frame-ancestors 'none'",
-
-            // Prevent this application from embedding external frames.
             "frame-src 'none'",
-
-            // Force HTTP resources to HTTPS.
             "upgrade-insecure-requests",
         ]);
 
@@ -76,15 +42,10 @@ class SecurityHeaders
             $csp
         );
 
-
         /*
         |--------------------------------------------------------------------------
         | Clickjacking Protection
         |--------------------------------------------------------------------------
-        |
-        | CSP frame-ancestors is the modern protection.
-        | X-Frame-Options provides legacy/scanner compatibility.
-        |
         */
 
         $response->headers->set(
@@ -92,10 +53,9 @@ class SecurityHeaders
             'DENY'
         );
 
-
         /*
         |--------------------------------------------------------------------------
-        | MIME Type Sniffing Protection
+        | MIME Sniffing Protection
         |--------------------------------------------------------------------------
         */
 
@@ -104,10 +64,9 @@ class SecurityHeaders
             'nosniff'
         );
 
-
         /*
         |--------------------------------------------------------------------------
-        | Referrer Information Protection
+        | Referrer Policy
         |--------------------------------------------------------------------------
         */
 
@@ -116,17 +75,10 @@ class SecurityHeaders
             'strict-origin-when-cross-origin'
         );
 
-
         /*
         |--------------------------------------------------------------------------
         | Permissions Policy
         |--------------------------------------------------------------------------
-        |
-        | Disable browser features not required by the application.
-        |
-        | microphone=(self) is retained because the application may use
-        | microphone functionality.
-        |
         */
 
         $response->headers->set(
@@ -141,7 +93,7 @@ class SecurityHeaders
                 'geolocation=()',
                 'gyroscope=()',
                 'magnetometer=()',
-                'microphone=(self)',
+                'microphone=()',
                 'payment=()',
                 'picture-in-picture=()',
                 'publickey-credentials-get=()',
@@ -150,10 +102,9 @@ class SecurityHeaders
             ])
         );
 
-
         /*
         |--------------------------------------------------------------------------
-        | Cross-Origin Isolation / Resource Protection
+        | Cross-Origin Policies
         |--------------------------------------------------------------------------
         */
 
@@ -167,17 +118,10 @@ class SecurityHeaders
             'same-origin'
         );
 
-
         /*
         |--------------------------------------------------------------------------
-        | HTTPS Strict Transport Security (HSTS)
+        | HSTS
         |--------------------------------------------------------------------------
-        |
-        | Only send HSTS over HTTPS in production.
-        |
-        | Do NOT add "preload" unless the entire parent domain and all
-        | required subdomains are intentionally ready for HSTS preloading.
-        |
         */
 
         if (
@@ -190,34 +134,24 @@ class SecurityHeaders
             );
         }
 
-
         /*
         |--------------------------------------------------------------------------
-        | Remove Technology Disclosure Headers
+        | Technology Disclosure
         |--------------------------------------------------------------------------
-        |
-        | PHP/LiteSpeed may add X-Powered-By AFTER Laravel processes the
-        | response. Therefore expose_php should ALSO be disabled in php.ini.
-        |
         */
 
         $response->headers->remove('X-Powered-By');
 
-
         /*
         |--------------------------------------------------------------------------
-        | Legacy Headers
+        | Cross-Domain Policy
         |--------------------------------------------------------------------------
-        |
-        | These are largely obsolete but harmless for older scanners/browsers.
-        |
         */
 
         $response->headers->set(
             'X-Permitted-Cross-Domain-Policies',
             'none'
         );
-
 
         return $response;
     }
